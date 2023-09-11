@@ -6,7 +6,6 @@ package resolver
 
 import (
 	"aseli-api/graph/database"
-	"aseli-api/graph/generated"
 	"aseli-api/graph/helper"
 	"aseli-api/graph/model"
 	"context"
@@ -77,12 +76,3 @@ func (r *queryResolver) GetUser(ctx context.Context, id *string) (*model.User, e
 	defer db.Close()
 	return users[0], nil
 }
-
-// Mutation returns generated.MutationResolver implementation.
-func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
-
-// Query returns generated.QueryResolver implementation.
-func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
-
-type mutationResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }

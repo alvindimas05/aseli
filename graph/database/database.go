@@ -1,9 +1,13 @@
 package database
 
-import "github.com/surrealdb/surrealdb.go"
+import (
+	"os"
+
+	"github.com/surrealdb/surrealdb.go"
+)
 
 func Connect() (*surrealdb.DB, error) {
-	db, err := surrealdb.New("ws://localhost:8000/rpc")
+	db, err := surrealdb.New(os.Getenv("DB_HOST"))
 	if err != nil {
 		return nil, err
 	}
