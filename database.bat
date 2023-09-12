@@ -1,1 +1,0 @@
-surreal start file://./SurrealDB
