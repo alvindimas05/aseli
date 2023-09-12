@@ -7,6 +7,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/surrealdb/surrealdb.go v0.2.1
 	github.com/vektah/gqlparser/v2 v2.5.9
+	golang.org/x/crypto v0.13.0
 )
 
 require (

@@ -14,6 +14,7 @@ import (
 	"reflect"
 
 	surrealdb "github.com/surrealdb/surrealdb.go"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // RegisterUser is the resolver for the registerUser field.
@@ -30,15 +31,23 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 		panic(err)
 	}
 
-	modified := helper.RemoveStructField(input, "VerificationPassword")
+	hashed, _ := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+	input.Password = string(hashed)
+
+	modified := model.User{}
+	surrealdb.Unmarshal(reflect.ValueOf(input).Interface(), &modified)
 
 	data, err := db.Create("user", modified)
 	if err != nil {
 		panic(err)
 	}
 
-	result := model.RegisterResponse{}
-	surrealdb.Unmarshal(reflect.ValueOf(data).Index(0).Interface(), &result)
+	user := model.User{}
+	surrealdb.Unmarshal(reflect.ValueOf(data).Index(0).Interface(), &user)
+	result := model.RegisterResponse{
+		Success: true,
+		ID: user.ID,
+	}
 
 	defer db.Close()
 	return &result, nil
@@ -51,20 +60,26 @@ func (r *mutationResolver) LoginUser(ctx context.Context, input model.LoginReque
 		panic(err)
 	}
 
-	query, err := db.Query("SELECT id FROM user WHERE username=$username AND password=$password", input)
+	query, err := db.Query("SELECT id, password FROM user WHERE username=$username", input)
 	if err != nil {
 		panic(err)
 	}
-	result := reflect.ValueOf(helper.NormalizeQueryResult(query))
 
+	user := model.User{}
+	result := reflect.ValueOf(helper.NormalizeQueryResult(query))
 	defer db.Close()
 
 	success := result.Len() > 0
 	var id *string
 
 	if success {
-		idStr := result.Interface().([]interface{})[0].(map[string]interface{})["id"].(string)
-		id = &idStr
+		surrealdb.Unmarshal(result.Interface().([]interface{})[0], &user)
+		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+			success = false
+		}
+	}
+	if success {
+		id = user.ID
 	}
 	return &model.LoginResponse{
 		Success: success,
@@ -73,7 +88,7 @@ func (r *mutationResolver) LoginUser(ctx context.Context, input model.LoginReque
 }
 
 // Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+func (r *queryResolver) Users(ctx context.Context) ([]*model.UserResponse, error) {
 	db, err := database.Connect()
 	if err != nil {
 		panic(err)
@@ -87,7 +102,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 
 	ndata := helper.NormalizeQueryResult(data)
 
-	users := []*model.User{}
+	users := []*model.UserResponse{}
 	surrealdb.Unmarshal(ndata, &users)
 
 	defer db.Close()
@@ -95,7 +110,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 }
 
 // GetUser is the resolver for the getUser field.
-func (r *queryResolver) GetUser(ctx context.Context, id string) (*model.User, error) {
+func (r *queryResolver) GetUser(ctx context.Context, id string) (*model.UserResponse, error) {
 	db, err := database.Connect()
 	if err != nil {
 		panic(err)
@@ -109,7 +124,7 @@ func (r *queryResolver) GetUser(ctx context.Context, id string) (*model.User, er
 
 	ndata := helper.NormalizeQueryResult(data)
 
-	users := []*model.User{}
+	users := []*model.UserResponse{}
 	surrealdb.Unmarshal(ndata, &users)
 
 	defer db.Close()
