@@ -19,6 +19,7 @@ input registerRequest {
 type registerResponse {
     success: Boolean!
     id: String
+    reason: String
 }
 
 # Login
@@ -30,6 +31,7 @@ input loginRequest {
 type loginResponse {
     success: Boolean!
     id: String
+    reason: String
 }
 
 type Query {

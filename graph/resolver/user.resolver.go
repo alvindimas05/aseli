@@ -20,15 +20,24 @@ import (
 // RegisterUser is the resolver for the registerUser field.
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterRequest) (*model.RegisterResponse, error) {
 	if input.Password != input.VerificationPassword {
+		reason := "verification password"
 		return &model.RegisterResponse{
 			Success: false,
-			ID:      nil,
+			Reason:  &reason,
 		}, nil
 	}
 
 	db, err := database.Connect()
 	if err != nil {
 		panic(err)
+	}
+
+	if helper.User.CheckUsername(helper.User{}, db, input.Username) {
+		reason := "username used"
+		return &model.RegisterResponse{
+			Success: false,
+			Reason:  &reason,
+		}, nil
 	}
 
 	hashed, _ := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
@@ -46,7 +55,7 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 	surrealdb.Unmarshal(reflect.ValueOf(data).Index(0).Interface(), &user)
 	result := model.RegisterResponse{
 		Success: true,
-		ID: user.ID,
+		ID:      user.ID,
 	}
 
 	defer db.Close()
@@ -72,6 +81,9 @@ func (r *mutationResolver) LoginUser(ctx context.Context, input model.LoginReque
 	success := result.Len() > 0
 	var id *string
 
+	reason := "wrong data"
+	reasonAddr := &reason
+
 	if success {
 		surrealdb.Unmarshal(result.Interface().([]interface{})[0], &user)
 		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
@@ -80,10 +92,12 @@ func (r *mutationResolver) LoginUser(ctx context.Context, input model.LoginReque
 	}
 	if success {
 		id = user.ID
+		reasonAddr = nil
 	}
 	return &model.LoginResponse{
 		Success: success,
 		ID:      id,
+		Reason:  reasonAddr,
 	}, nil
 }
 
