@@ -3,16 +3,35 @@ type User {
     username: String!
 }
 
-input newUser {
+# Register
+input registerRequest {
+    username: String!
+    password: String!
+    verification_password: String!
+}
+
+type registerResponse {
+    success: Boolean!
+    id: String
+}
+
+# Login
+input loginRequest {
     username: String!
     password: String!
 }
 
+type loginResponse {
+    success: Boolean!
+    id: String
+}
+
 type Query {
     users: [User!]!
-    getUser(id: String): User!
+    getUser(id: String!): User!
 }
 
 type Mutation {
-    registerUser(input: newUser): User!
+    registerUser(input: registerRequest!): registerResponse!
+    loginUser(input: loginRequest!): loginResponse!
 }
