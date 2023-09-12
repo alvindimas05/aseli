@@ -1,4 +1,10 @@
 type User {
+    id: String
+    username: String!
+    password: String!
+}
+
+type UserResponse {
     id: String!
     username: String!
 }
@@ -27,8 +33,8 @@ type loginResponse {
 }
 
 type Query {
-    users: [User!]!
-    getUser(id: String!): User!
+    users: [UserResponse!]!
+    getUser(id: String!): UserResponse!
 }
 
 type Mutation {
