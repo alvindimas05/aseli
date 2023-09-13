@@ -53,9 +53,11 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 
 	user := model.User{}
 	surrealdb.Unmarshal(reflect.ValueOf(data).Index(0).Interface(), &user)
+
+	key := helper.User.RegisterAuthKey(helper.User{}, db, *user.ID)
 	result := model.RegisterResponse{
 		Success: true,
-		ID:      user.ID,
+		AuthKey: &key,
 	}
 
 	defer db.Close()
@@ -79,11 +81,11 @@ func (r *mutationResolver) LoginUser(ctx context.Context, input model.LoginReque
 	defer db.Close()
 
 	success := result.Len() > 0
-	var id *string
 
 	reason := "wrong data"
 	reasonAddr := &reason
 
+	var key string
 	if success {
 		surrealdb.Unmarshal(result.Interface().([]interface{})[0], &user)
 		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
@@ -91,12 +93,13 @@ func (r *mutationResolver) LoginUser(ctx context.Context, input model.LoginReque
 		}
 	}
 	if success {
-		id = user.ID
+		key = helper.User.RegisterAuthKey(helper.User{}, db, *user.ID)
 		reasonAddr = nil
 	}
+
 	return &model.LoginResponse{
 		Success: success,
-		ID:      id,
+		AuthKey: &key,
 		Reason:  reasonAddr,
 	}, nil
 }

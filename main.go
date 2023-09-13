@@ -2,6 +2,7 @@ package main
 
 import (
 	"aseli-api/graph/generated"
+	"aseli-api/graph/middleware"
 	"aseli-api/graph/resolver"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
 
@@ -29,12 +31,16 @@ func main() {
 
 func SetServer() {
 	port := os.Getenv("SERVER_PORT")
+	router := chi.NewRouter()
+
+	router.Use(middleware.UserMiddleware)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{}}))
+	// srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{}}))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe("127.0.0.1:"+port, nil))
+	log.Fatal(http.ListenAndServe("127.0.0.1:"+port, router))
 }

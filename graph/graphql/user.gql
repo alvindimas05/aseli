@@ -4,6 +4,12 @@ type User {
     password: String!
 }
 
+type AuthUser {
+    id: String
+    user: String!
+    auth_key: String!
+}
+
 type UserResponse {
     id: String!
     username: String!
@@ -18,7 +24,7 @@ input registerRequest {
 
 type registerResponse {
     success: Boolean!
-    id: String
+    auth_key: String
     reason: String
 }
 
@@ -30,7 +36,7 @@ input loginRequest {
 
 type loginResponse {
     success: Boolean!
-    id: String
+    auth_key: String
     reason: String
 }
 
