@@ -1,10 +1,13 @@
 package middleware
 
 import (
+	"aseli-api/graph/database"
+	"aseli-api/graph/helper"
 	"bytes"
 	"encoding/json"
 	"io"
 	"net/http"
+	"reflect"
 
 	"golang.org/x/exp/slices"
 )
@@ -29,6 +32,30 @@ func UserMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		http.Error(w, "Invalid cookie", http.StatusForbidden)
+		key := r.Header.Get("Auth-Key")
+		if key == "" {
+			http.Error(w, "Invalid Auth-Key", http.StatusForbidden)
+			return
+		}
+
+		db, err := database.Connect()
+		if err != nil {
+			http.Error(w, "Database connection error", http.StatusInternalServerError)
+			return
+		}
+
+		query, err := db.Query("SELECT id FROM auth_user WHERE auth_key=$auth_key", map[string]interface{}{"auth_key": key})
+		if err != nil {
+			http.Error(w, "Authentication check error.", http.StatusInternalServerError)
+			return
+		}
+		defer db.Close()
+
+		user := helper.NormalizeQueryResult(query)
+		if reflect.ValueOf(user).Len() > 0 {
+			next.ServeHTTP(w, r)
+		} else {
+			http.Error(w, "Invalid Auth-Key", http.StatusForbidden)
+		}
 	})
 }
