@@ -3,12 +3,15 @@ package middleware
 import (
 	"aseli-api/graph/database"
 	"aseli-api/graph/helper"
+	"aseli-api/graph/model"
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
 	"reflect"
 
+	"github.com/surrealdb/surrealdb.go"
 	"golang.org/x/exp/slices"
 )
 
@@ -44,16 +47,20 @@ func UserMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		query, err := db.Query("SELECT id FROM auth_user WHERE auth_key=$auth_key", map[string]interface{}{"auth_key": key})
+		query, err := db.Query("SELECT user FROM auth_user WHERE auth_key=$auth_key", map[string]interface{}{"auth_key": key})
 		if err != nil {
 			http.Error(w, "Authentication check error.", http.StatusInternalServerError)
 			return
 		}
 		defer db.Close()
 
-		user := helper.NormalizeQueryResult(query)
-		if reflect.ValueOf(user).Len() > 0 {
-			next.ServeHTTP(w, r)
+		auth := helper.NormalizeQueryResult(query)
+		if reflect.ValueOf(auth).Len() > 0 {
+			authData := model.AuthUser{}
+			surrealdb.Unmarshal(auth.([]interface{})[0], &authData)
+
+			rAuth := r.WithContext(context.WithValue(r.Context(), "user", authData.User))
+			next.ServeHTTP(w, rAuth)
 		} else {
 			http.Error(w, "Invalid Auth-Key", http.StatusForbidden)
 		}
