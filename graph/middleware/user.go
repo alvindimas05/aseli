@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"reflect"
+	"strings"
 
 	"github.com/surrealdb/surrealdb.go"
 	"golang.org/x/exp/slices"
@@ -30,7 +31,8 @@ func UserMiddleware(next http.Handler) http.Handler {
 		body := RequestBody{}
 		json.Unmarshal(data, &body)
 
-		if body.OperationName == nil || slices.Contains(allowed, *body.OperationName) {
+		if (body.OperationName == nil && !strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data")) ||
+			(body.OperationName != nil && slices.Contains(allowed, *body.OperationName)) {
 			next.ServeHTTP(w, r)
 			return
 		}
