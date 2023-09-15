@@ -26,7 +26,7 @@ func (_p Post) SaveImage(image graphql.Upload) string {
 	if _, err := io.Copy(dest, image.File); err != nil {
 		panic(err)
 	}
-	return imgPath
+	return filename
 }
 
 func MkdirImages() string {
