@@ -13,14 +13,14 @@ import (
 	"strings"
 
 	"github.com/surrealdb/surrealdb.go"
-	"golang.org/x/exp/slices"
 )
 
-var allowed = []string{"RegisterUser", "LoginUser"}
+var allowed = []string{"IntrospectionQuery", "RegisterUser", "LoginUser"}
 
 type RequestBody struct {
 	// Query         string `json:"query"`
-	OperationName *string `json:"operationName"`
+	// OperationName string `json:"operationName"`
+	Query string `json:"query"`
 }
 
 func UserMiddleware(next http.Handler) http.Handler {
@@ -31,8 +31,8 @@ func UserMiddleware(next http.Handler) http.Handler {
 		body := RequestBody{}
 		json.Unmarshal(data, &body)
 
-		if (body.OperationName == nil && !strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data")) ||
-			(body.OperationName != nil && slices.Contains(allowed, *body.OperationName)) {
+		if !strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") &&
+			contains(body.Query, allowed) {
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -67,4 +67,13 @@ func UserMiddleware(next http.Handler) http.Handler {
 			http.Error(w, "Invalid Auth-Key", http.StatusForbidden)
 		}
 	})
+}
+
+func contains(s string, c []string) bool {
+	for _, co := range c {
+		if strings.Contains(s, co) {
+			return true
+		}
+	}
+	return false
 }
