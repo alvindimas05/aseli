@@ -8,27 +8,26 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body class="w-full flex">
-
-    <aside id="sidebar" class=" top-0 left-0 z-40 w-[275px] h-screen" aria-label="Sidebar">
+    <aside id="sidebar" class="w-[300px] h-screen" aria-label="Sidebar">
         <div class="h-full pl-4 pr-3  py-4 overflow-y-auto border-r border-white">
             <a href="#" class="flex items-center pl-2.5 mb-5">
                 <span class="logo self-center text-4xl whitespace-nowrap text-white my-8">aseli</span>
             </a>
             <ul class="space-y-2 text-xl">
                 <li>
-                    <a href="#" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <a href="home.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white bg-gray-700 ">
                     <img src="/icon/home.png" class="w-[25px] h-[25px]" alt="home">
                     <span class="ml-3">Home</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <a href="explore.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
                     <img src="/icon/explore.png" class="w-[25px] h-[25px]" alt="explore">
                     <span class="ml-3">Eksplorasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <a href="profil.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
                     <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil">
                     <span class="flex-1 ml-3 whitespace-nowrap">Profil</span>
                     </a>
@@ -59,59 +58,196 @@
         </div>
     </aside> 
 
-    <div class="konten container w-[800px] h-[100vh] mx-auto overflow-y-scroll">
-        <input type="search" placeholder="Cari..." class="my-5 py-2 px-4 w-full rounded-full bg-[#0000] border border-white text-white placeholder:text-white">
-        <div class="category-list flex mb-5 gap-2 overflow-x-scroll">
-            <button class="py-2 px-4 rounded-full border-[2px] border-white text-white hover:bg-white hover:text-black">Meme</button>
-            <button class="py-2 px-4 rounded-full border-[2px] border-white text-white hover:bg-white hover:text-black">ingfo</button>
-            <button class="py-2 px-4 rounded-full border-[2px] border-white text-white hover:bg-white hover:text-black">tumtor</button>
-            <button class="py-2 px-4 rounded-full border-[2px] border-white text-white hover:bg-white hover:text-black">vingral</button>
-        </div>
-        <div class="grid grid-cols-3 gap-2 place-items-center">
-            <img src="https://placehold.co/300" alt="konten" class="konten1">
-            <img src="https://placehold.co/300" alt="konten" class="konten2">
-            <img src="https://placehold.co/300" alt="konten" class="konten3">
-            <img src="https://placehold.co/300" alt="konten" class="konten4">
-            <img src="https://placehold.co/300" alt="konten" class="konten5">
-            <img src="https://placehold.co/300" alt="konten" class="konten6">
-            <img src="https://placehold.co/300" alt="konten" class="konten7">
-            <img src="https://placehold.co/300" alt="konten" class="konten8">
-            <img src="https://placehold.co/300" alt="konten" class="konten9">
-        </div>
-    </div>
-
-    <div class="post container grid-cols-1 w-[500px] ml-full mt-5 hidden">
-
-        <img src="https://placehold.co/400" class="w-[400px] h-[400px]" alt="post-img">
-
-        <div class="post-action flex flex-row gap-[4px] mt-4">
-            <img src="/icon/nyata.png" class="w-[30px] h-[30px]">
-            <span class="text-white text-lg ml-1">100</span>
-            <span class="text-white text-lg mr-5">nyata</span>
-            <img src="/icon/komen.png" class="w-[30px] h-[30px]">
-            <span class="text-white text-lg ml-1">100</span>
-            <span class="text-white text-lg mr-5">komen</span>
-            <img src="/icon/share.png" class="w-[30px] h-[30px]">
-        </div>
-
-        <div class="post-detail text-lg w-[400px]">
-            <div class="text-white font-bold mt-5">alvin_dimas</div>
-            <div class="text-white">Lorem ipsum dolor sit amet, consectetur de stan adipisicing elit. A reprehenderit maxime apis!</div>
-            <div class="text-[#ADD8E6]">Baca selengkapnya...</div>
-            <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div>
-        </div>
+    <div class="konten container h-[100vh] mx-auto overflow-y-scroll w-[900px]">
         
+        <div class="grid grid-cols-1 mx-auto my-10 bg-[#1F1913] w-[600px] rounded-xl drop-shadow-2xl">
+            <div class="flex items-center py-4 pr-4">
+                <div class="grid grid-cols-2 place-items-center">
+                    <img src="icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white">
+                    <span class="text-white text-lg ml-[-6px]">abyankuhhh</span>
+                </div>
+                <img src="icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto">
+            </div>
+            <img src="https://placehold.co/600" class="w-full">
+
+            <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
+                <img src="/icon/nyata.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">nyata</span>
+                <img src="/icon/komen.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">komen</span>
+                <img src="/icon/share.png" class="w-[30px] h-[30px]">
+            </div>
+    
+            <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
+                <div class="text-white font-bold mt-5">alvin_dimas</div>
+                <div class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptates necessitatibus totam tempore, doloremque enim explicabo quia minus.</div>
+                <div class="text-[#ADD8E6]">Baca selengkapnya...</div>
+                <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mx-auto my-10 bg-[#1F1913] w-[600px] rounded-xl drop-shadow-2xl">
+            <div class="flex items-center py-4 pr-4">
+                <div class="grid grid-cols-2 place-items-center">
+                    <img src="icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white">
+                    <span class="text-white text-lg ml-[-6px]">abyankuhhh</span>
+                </div>
+                <img src="icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto">
+            </div>
+            <img src="https://placehold.co/600" class="w-full">
+
+            <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
+                <img src="/icon/nyata.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">nyata</span>
+                <img src="/icon/komen.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">komen</span>
+                <img src="/icon/share.png" class="w-[30px] h-[30px]">
+            </div>
+    
+            <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
+                <div class="text-white font-bold mt-5">alvin_dimas</div>
+                <div class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptates necessitatibus totam tempore, doloremque enim explicabo quia minus.</div>
+                <div class="text-[#ADD8E6]">Baca selengkapnya...</div>
+                <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mx-auto my-10 bg-[#1F1913] w-[600px] rounded-xl drop-shadow-2xl">
+            <div class="flex items-center py-4 pr-4">
+                <div class="grid grid-cols-2 place-items-center">
+                    <img src="icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white">
+                    <span class="text-white text-lg ml-[-6px]">abyankuhhh</span>
+                </div>
+                <img src="icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto">
+            </div>
+            <img src="https://placehold.co/600" class="w-full">
+
+            <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
+                <img src="/icon/nyata.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">nyata</span>
+                <img src="/icon/komen.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">komen</span>
+                <img src="/icon/share.png" class="w-[30px] h-[30px]">
+            </div>
+    
+            <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
+                <div class="text-white font-bold mt-5">alvin_dimas</div>
+                <div class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptates necessitatibus totam tempore, doloremque enim explicabo quia minus.</div>
+                <div class="text-[#ADD8E6]">Baca selengkapnya...</div>
+                <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mx-auto my-10 bg-[#1F1913] w-[600px] rounded-xl drop-shadow-2xl">
+            <div class="flex items-center py-4 pr-4">
+                <div class="grid grid-cols-2 place-items-center">
+                    <img src="icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white">
+                    <span class="text-white text-lg ml-[-6px]">abyankuhhh</span>
+                </div>
+                <img src="icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto">
+            </div>
+            <img src="https://placehold.co/600" class="w-full">
+
+            <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
+                <img src="/icon/nyata.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">nyata</span>
+                <img src="/icon/komen.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">komen</span>
+                <img src="/icon/share.png" class="w-[30px] h-[30px]">
+            </div>
+    
+            <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
+                <div class="text-white font-bold mt-5">alvin_dimas</div>
+                <div class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptates necessitatibus totam tempore, doloremque enim explicabo quia minus.</div>
+                <div class="text-[#ADD8E6]">Baca selengkapnya...</div>
+                <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mx-auto my-10 bg-[#1F1913] w-[600px] rounded-xl drop-shadow-2xl">
+            <div class="flex items-center py-4 pr-4">
+                <div class="grid grid-cols-2 place-items-center">
+                    <img src="icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white">
+                    <span class="text-white text-lg ml-[-6px]">abyankuhhh</span>
+                </div>
+                <img src="icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto">
+            </div>
+            <img src="https://placehold.co/600" class="w-full">
+
+            <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
+                <img src="/icon/nyata.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">nyata</span>
+                <img src="/icon/komen.png" class="w-[30px] h-[30px]">
+                <span class="text-white text-lg ml-1">100</span>
+                <span class="text-white text-lg mr-5">komen</span>
+                <img src="/icon/share.png" class="w-[30px] h-[30px]">
+            </div>
+    
+            <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
+                <div class="text-white font-bold mt-5">alvin_dimas</div>
+                <div class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptates necessitatibus totam tempore, doloremque enim explicabo quia minus.</div>
+                <div class="text-[#ADD8E6]">Baca selengkapnya...</div>
+                <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div>
+            </div>
+        </div>
+
+
     </div>
 
+
+    <div class="w-[325px] h-screen">
+        <div class="h-full pl-4 pr-3 pt-12 overflow-y-auto">
+            <div class="grid grid-cols-1 text-white rounded-xl bg-[#1F1913] pt-4">
+                <span class="text-xl mx-4 my-2">Trending</span>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Meme</div>
+                    <div class="text-xl">Top singko orang hitam</div>
+                    <div class="text-[#707070]">180 postingan</div>
+                </div>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Ingfo</div>
+                    <div class="text-xl">Disaat bapak hitam ini melihat hpnya gaiss</div>
+                    <div class="text-[#707070]">217 postingan</div>
+                </div>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Tumtor</div>
+                    <div class="text-xl">Tutorial menikahi vtuber</div>
+                    <div class="text-[#707070]">180 postingan</div>
+                </div>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Vingral</div>
+                    <div class="text-xl">Cipung ternyata lebih suka Ronaldo daripada Messi?</div>
+                    <div class="text-[#707070]">180 postingan</div>
+                </div>
+                <div class="text-lg text-[#4488ee] py-3 px-4 hover:bg-[#4F4943] rounded-t rounded-xl">Tampilkan lebih banyak</div>
+            </div>
+            <div class="text-sm text-[#707070] text-center px-3 mt-3 ">
+                <span class="hover:underline cursor-pointer">Persyaratan Layanan</span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Kebijakan Privasi</span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Aksesibilitas</span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Informasi Iklan </span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Kebijakan Penggunaan Cookie</span>
+            </div>
+            <div class="copyright text-md text-white text-center mt-3">
+                © 2023 aseli
+            </div>
+        </div>
+    </div>
 </body>
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Chango&family=Dancing+Script:wght@600&family=IBM+Plex+Sans:wght@600&family=Poppins:wght@500&family=Quantico&display=swap');
 
   .konten::-webkit-scrollbar{
-    display: none;
-  }
-  .category-list::-webkit-scrollbar{
     display: none;
   }
   body{
