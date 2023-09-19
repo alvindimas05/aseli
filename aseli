@@ -1,15 +1,15 @@
-@echo off
+#!/bin/bash
 
-if "%1" == "run" ||  (
+if [ "$1" == "run" ]; then
     go build -o aseli-api && ./aseli-api
-) else if "%1" == "start" ||  (
+elif [ "$1" == "start" ]; then
     go build -o aseli-api && ./aseli-api
-) else if "%1" == "generate" (
+elif [ "$1" == "generate" ]; then
     go get github.com/99designs/gqlgen && go run github.com/99designs/gqlgen generate
-) else if "%1" == "database" (
+elif [ "$1" == "database" ]; then
     surreal start file://./SurrealDB
-) else if "%1" == "db" (
+elif [ "$1" == "db" ]; then
     surreal start file://./SurrealDB
-) else (
+else
     echo "Command not found."
-)
+fi
