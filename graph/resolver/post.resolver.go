@@ -11,6 +11,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
 	surrealdb "github.com/surrealdb/surrealdb.go"
@@ -34,6 +35,8 @@ func (r *mutationResolver) CreatePost(ctx context.Context, title string, descrip
 		Title:       title,
 		Description: description,
 		Image:       imgName,
+		Ril: []string{},
+		Fek: []string{},
 	})
 	if err != nil {
 		panic(err)
@@ -45,4 +48,52 @@ func (r *mutationResolver) CreatePost(ctx context.Context, title string, descrip
 	return &model.ResponseCreatePost{
 		PostID: *post.ID,
 	}, nil
+}
+
+// SendRil is the resolver for the sendRil field.
+func (r *mutationResolver) SendRil(ctx context.Context, postID string) (*bool, error) {
+	panic(fmt.Errorf("not implemented: SendRil - sendRil"))
+}
+
+// SendFek is the resolver for the sendFek field.
+func (r *mutationResolver) SendFek(ctx context.Context, postID string) (*bool, error) {
+	panic(fmt.Errorf("not implemented: SendFek - sendFek"))
+}
+
+// Posts is the resolver for the posts field.
+func (r *queryResolver) Posts(ctx context.Context) ([]*model.PostResponse, error) {
+	db, err := database.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	fields := helper.NormalizeFields(ctx)
+	fields = strings.Replace(fields, "username", "user.username AS username", 1)
+	fields = strings.Replace(fields, "ril", "array::len(ril) AS ril", 1)
+	fields = strings.Replace(fields, "fek", "array::len(fek) AS fek", 1)
+
+	query, err := db.Query(fmt.Sprintf("SELECT %s OMIT user FROM post", fields), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	ndata := helper.NormalizeQueryResult(query)
+	posts := []*model.PostResponse{}
+	surrealdb.Unmarshal(ndata, &posts)
+	
+	// resPosts := []*model.PostResponse{}
+	// for _, post := range(posts) {
+	// 	resPosts = append(resPosts, &model.PostResponse{
+	// 		ID: post.ID,
+	// 		Title: post.Title,
+	// 		Description: post.Description,
+	// 		Image: post.Image,
+	// 		Username: post.Username,
+	// 		Ril: len(post.Ril),
+	// 		Fek: len(post.Fek),
+	// 	})
+	// }
+
+	defer db.Close()
+	return posts, nil
 }

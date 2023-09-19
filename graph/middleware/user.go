@@ -15,7 +15,7 @@ import (
 	"github.com/surrealdb/surrealdb.go"
 )
 
-var allowed = []string{"IntrospectionQuery", "RegisterUser", "LoginUser"}
+var allowed = []string{"IntrospectionQuery", "registerUser", "loginUser", "posts"}
 
 type RequestBody struct {
 	// Query         string `json:"query"`
@@ -23,7 +23,7 @@ type RequestBody struct {
 	Query string `json:"query"`
 }
 
-func UserMiddleware(next http.Handler) http.Handler {
+func UserMiddleware(next http.Handler) http.Handler {	
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data, _ := io.ReadAll(r.Body)
 		r.Body = io.NopCloser(bytes.NewReader(data))
