@@ -2,6 +2,7 @@ package helper
 
 import (
 	"context"
+	"regexp"
 	// "reflect"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -20,6 +21,13 @@ func NormalizeFields(ctx context.Context) string {
 		}
 	}
 	return fields
+}
+
+func SafelyConvertString(input string) string {
+    pattern := "[`'\"`]"
+    re := regexp.MustCompile(pattern)
+    cleaned := re.ReplaceAllString(input, "")
+    return cleaned
 }
 // func RemoveStructField(inputStruct interface{}, fieldNameToRemove string) interface{} {
 //     // Get the type of the input struct
