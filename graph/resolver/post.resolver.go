@@ -52,12 +52,12 @@ func (r *mutationResolver) CreatePost(ctx context.Context, title string, descrip
 
 // SendRil is the resolver for the sendRil field.
 func (r *mutationResolver) SendRil(ctx context.Context, postID string) (*bool, error) {
-	panic(fmt.Errorf("not implemented: SendRil - sendRil"))
+	return helper.Post.SendRilOrFek(helper.Post{}, "ril", ctx, postID)
 }
 
 // SendFek is the resolver for the sendFek field.
 func (r *mutationResolver) SendFek(ctx context.Context, postID string) (*bool, error) {
-	panic(fmt.Errorf("not implemented: SendFek - sendFek"))
+	return helper.Post.SendRilOrFek(helper.Post{}, "fek", ctx, postID)
 }
 
 // Posts is the resolver for the posts field.
