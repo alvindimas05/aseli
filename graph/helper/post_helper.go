@@ -2,6 +2,7 @@ package helper
 
 import (
 	"aseli-api/graph/database"
+	"aseli-api/graph/model"
 	"context"
 	"fmt"
 	"io"
@@ -12,6 +13,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/google/uuid"
+	"github.com/surrealdb/surrealdb.go"
 )
 
 type Post struct{}
@@ -48,7 +50,7 @@ func (_p Post) ValidatePost(post_id string) bool {
 }
 
 func (_p Post) SendRilOrFek(send_type string, ctx context.Context, postID string) (*bool, error) {
-	if !Post.ValidatePost(_p, postID) {
+	if !_p.ValidatePost(postID) {
 		return nil, fmt.Errorf("post not found")
 	}
 
@@ -84,6 +86,35 @@ func (_p Post) SendRilOrFek(send_type string, ctx context.Context, postID string
 	exist = !exist
 	defer db.Close()
 	return &exist, nil
+}
+
+func (_p Post) StoreComment(ctx context.Context, input model.RequestSendComment) (*model.Comment, error) {
+	if !_p.ValidatePost(input.PostID) {
+		return nil, fmt.Errorf("post not found")
+	}
+	db, err := database.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	query, err := db.Create("comment", model.Comment{
+		Post: input.PostID,
+		User: ctx.Value("user").(string),
+		Time: GetCurrentDateTime(),
+		Comment: input.Comment,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	cmt := query.([]interface{})[0]
+	comment := model.Comment{}
+
+	surrealdb.Unmarshal(cmt, &comment)
+
+	fmt.Printf("%v", comment)
+	defer db.Close()
+	return &comment, nil
 }
 
 func MkdirImages() string {

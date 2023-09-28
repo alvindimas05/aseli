@@ -8,16 +8,44 @@ type Post {
     image: String! 
     ril: [String!]!
     fek: [String!]!
+    time: String!
+    comments: [String!]!
+}
+
+type Comment {
+    id: String
+    post: String!
+    user: String!
+    time: String!
+    comment: String!
+}
+
+type CommentResponse {
+    id: String!
+    username: String!
+    time: String!
+    comment: String!
 }
 
 type PostResponse {
-    id: String
+    id: String!
     username: String!
     title: String!
     description: String!
     image: String!
     ril: Int!
     fek: Int!
+    comments: [CommentResponse!]!
+}
+
+input requestSendComment {
+    post_id: String!
+    comment: String!
+}
+
+type responseSendComment {
+    comment_id: String!
+    time: String!
 }
 
 type responseCreatePost {
@@ -36,4 +64,5 @@ extend type Mutation {
     ): responseCreatePost!
     sendRil(post_id: String!): Boolean
     sendFek(post_id: String!): Boolean
+    sendComment(input: requestSendComment!): responseSendComment!
 }
