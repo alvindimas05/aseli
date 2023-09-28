@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ "$1" == "run" ]; then
-    go build -o aseli-api && ./aseli-api
+    go build -o aseli-api -buildvcs=false && ./aseli-api
 elif [ "$1" == "start" ]; then
-    go build -o aseli-api && ./aseli-api
+    go build -o aseli-api -buildvcs=false && ./aseli-api
 elif [ "$1" == "generate" ]; then
     go get github.com/99designs/gqlgen && go run github.com/99designs/gqlgen generate
 elif [ "$1" == "database" ]; then
