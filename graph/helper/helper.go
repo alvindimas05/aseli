@@ -3,6 +3,9 @@ package helper
 import (
 	"context"
 	"regexp"
+	"strings"
+	"time"
+
 	// "reflect"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -11,16 +14,67 @@ import (
 func NormalizeQueryResult(data interface{}) interface{} {
 	return data.([]interface{})[0].(map[string]interface{})["result"]
 }
-func NormalizeFields(ctx context.Context) string {
-	arrFields := graphql.CollectAllFields(ctx)
-	fields := ""
-	for i, field := range arrFields {
-		fields += field
-		if i < len(arrFields)-1 {
-			fields += ","
-		}
+func SplitFieldByName(input string, name string) []string {
+    parts := strings.Split(input, ",")
+
+    // Create arrays to store parts matching the given name and non-matching parts
+    var matchingParts []string
+    var nonMatchingParts []string
+
+    for _, part := range parts {
+        // Check if the part starts with the given name followed by a dot
+        if strings.HasPrefix(part, name+".") {
+            matchingParts = append(matchingParts, strings.TrimPrefix(part, name+"."))
+        } else {
+            nonMatchingParts = append(nonMatchingParts, part)
+        }
+    }
+
+    // Join the arrays into strings
+    matchingString := strings.Join(matchingParts, ",")
+    nonMatchingString := strings.Join(nonMatchingParts, ",")
+
+    // Create an array to store the final result
+    result := []string{nonMatchingString}
+    if matchingString != "" {
+        result = append(result, matchingString)
+    }
+
+    return result
+}
+func GetPreloads(ctx context.Context) []string {
+	return GetNestedPreloads(
+		graphql.GetOperationContext(ctx),
+		graphql.CollectFieldsCtx(ctx, nil),
+		"",
+	)
+}
+func GetNestedPreloads(ctx *graphql.OperationContext, fields []graphql.CollectedField, prefix string) (preloads []string) {
+	for _, column := range fields {
+		prefixColumn := GetPreloadString(prefix, column.Name)
+		preloads = append(preloads, prefixColumn)
+		preloads = append(preloads, GetNestedPreloads(ctx, graphql.CollectFields(ctx, column.Selections, nil), prefixColumn)...)
 	}
-	return fields
+	return
+}
+func GetPreloadString(prefix, name string) string {
+	if len(prefix) > 0 {
+		return prefix + "." + name
+	}
+	return name
+}
+
+func NormalizeFields(ctx context.Context) string {
+	return strings.Join(GetPreloads(ctx), ",")
+	// arrFields := graphql.CollectAllFields(ctx)
+	// fields := ""
+	// for i, field := range arrFields {
+	// 	fields += field
+	// 	if i < len(arrFields)-1 {
+	// 		fields += ","
+	// 	}
+	// }
+	// return fields
 }
 
 func SafelyConvertString(input string) string {
@@ -28,6 +82,11 @@ func SafelyConvertString(input string) string {
     re := regexp.MustCompile(pattern)
     cleaned := re.ReplaceAllString(input, "")
     return cleaned
+}
+
+func GetCurrentDateTime() string {
+	currentTime := time.Now().UTC()
+	return currentTime.Format("2006-01-02T15:04:05Z")
 }
 // func RemoveStructField(inputStruct interface{}, fieldNameToRemove string) interface{} {
 //     // Get the type of the input struct
