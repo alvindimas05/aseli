@@ -1,0 +1,5 @@
+query GetPosts {
+    posts {
+        id image title description ril fek
+    }
+}
