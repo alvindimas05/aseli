@@ -11,6 +11,7 @@ class LoginViewModel : ViewModel() {
     private val client = Client.setClient()
     val loginFailed = MutableLiveData(false)
     var failedType = ""
+    var authKey = ""
 
     var username = ""
     var password = ""
@@ -35,6 +36,7 @@ class LoginViewModel : ViewModel() {
         val mutation = LoginUserMutation(username, password)
         val res = client.mutation(mutation).execute()
 
+        authKey = res.data!!.loginUser.auth_key.toString()
         failedType = res.data!!.loginUser.reason.toString()
         loginFailed.value = !res.data!!.loginUser.success
     }
