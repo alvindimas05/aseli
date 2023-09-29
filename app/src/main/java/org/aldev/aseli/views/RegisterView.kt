@@ -1,5 +1,6 @@
 package org.aldev.aseli.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,11 @@ class RegisterView : AppCompatActivity() {
             binding.btnRegister.isClickable = false
             viewModel.register()
         }
+        binding.btnToLogin.setOnClickListener { moveToLogin() }
+    }
+    private fun moveToLogin(){
+        startActivity(Intent(this, RegisterView::class.java))
+        finish()
     }
     private fun setOnRegisterResult(){
         viewModel.registerFailed.observe(this) {
