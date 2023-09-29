@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"reflect"
@@ -31,8 +32,13 @@ func UserMiddleware(next http.Handler) http.Handler {
 		body := RequestBody{}
 		json.Unmarshal(data, &body)
 
+		// Check if has file
 		if !strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") &&
-			contains(body.Query, allowed) {
+			// Check if allowed query or mutation
+			contains(body.Query, allowed) &&
+			// Check if getting images
+			strings.Contains(r.URL.Path, "/images") {
+				
 			next.ServeHTTP(w, r)
 			return
 		}
