@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"reflect"
@@ -38,7 +37,7 @@ func UserMiddleware(next http.Handler) http.Handler {
 			contains(body.Query, allowed) &&
 			// Check if getting images
 			strings.Contains(r.URL.Path, "/images") {
-				
+
 			next.ServeHTTP(w, r)
 			return
 		}
