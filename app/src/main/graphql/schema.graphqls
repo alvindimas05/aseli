@@ -6,12 +6,40 @@ type AuthUser {
   auth_key: String!
 }
 
+type Comment {
+  id: String
+
+  post: String!
+
+  user: String!
+
+  time: String!
+
+  comment: String!
+}
+
+type CommentResponse {
+  id: String!
+
+  username: String!
+
+  time: String!
+
+  comment: String!
+}
+
 type Mutation {
   registerUser(input: registerRequest!): registerResponse!
 
   loginUser(input: loginRequest!): loginResponse!
 
   createPost(title: String!, description: String!, image: Upload!): responseCreatePost!
+
+  sendRil(post_id: String!): Boolean
+
+  sendFek(post_id: String!): Boolean
+
+  sendComment(input: requestSendComment!): responseSendComment!
 }
 
 type Post {
@@ -24,12 +52,40 @@ type Post {
   description: String!
 
   image: String!
+
+  ril: [String!]!
+
+  fek: [String!]!
+
+  time: String!
+
+  comments: [String!]!
+}
+
+type PostResponse {
+  id: String!
+
+  username: String!
+
+  title: String!
+
+  description: String!
+
+  image: String!
+
+  ril: Int!
+
+  fek: Int!
+
+  comments: [CommentResponse!]!
 }
 
 type Query {
   users: [UserResponse!]!
 
   getUser(id: String!): UserResponse!
+
+  posts: [PostResponse!]!
 }
 
 scalar Upload
@@ -234,8 +290,20 @@ type registerResponse {
   reason: String
 }
 
+input requestSendComment {
+  post_id: String!
+
+  comment: String!
+}
+
 type responseCreatePost {
   post_id: String!
+}
+
+type responseSendComment {
+  comment_id: String!
+
+  time: String!
 }
 
 """
