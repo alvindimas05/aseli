@@ -23,7 +23,7 @@ type RequestBody struct {
 	Query string `json:"query"`
 }
 
-func UserMiddleware(next http.Handler) http.Handler {	
+func UserMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data, _ := io.ReadAll(r.Body)
 		r.Body = io.NopCloser(bytes.NewReader(data))
@@ -32,9 +32,9 @@ func UserMiddleware(next http.Handler) http.Handler {
 		json.Unmarshal(data, &body)
 
 		// Check if has file
-		if !strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") &&
+		if (!strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") &&
 			// Check if allowed query or mutation
-			contains(body.Query, allowed) &&
+			contains(body.Query, allowed)) ||
 			// Check if getting images
 			strings.Contains(r.URL.Path, "/images") {
 
