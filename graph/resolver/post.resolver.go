@@ -98,9 +98,14 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.PostResponse, error
 
 	sfields := helper.SplitFieldByName(fields, "comments")
 	sfields[0] = strings.Replace(sfields[0], "username", "user.username AS username", 1)
-	sfields[1] = strings.Replace(sfields[1], "username", "user.username AS username", 1)
+	
+	cmtCmd := ""
+	if len(sfields) > 1 {
+		sfields[1] = strings.Replace(sfields[1], "username", "user.username AS username", 1)
+		cmtCmd = fmt.Sprintf(", (SELECT %s OMIT user, post FROM comment) AS comments", sfields[1])
+	}
 
-	query, err := db.Query(fmt.Sprintf("SELECT %s, (SELECT %s OMIT user, post FROM comment) AS comments OMIT user FROM post", sfields[0], sfields[1]), nil)
+	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post", sfields[0], cmtCmd), nil)
 	if err != nil {
 		panic(err)
 	}
