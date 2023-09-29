@@ -71,11 +71,11 @@
         android:textAllCaps="false"
         android:text="Register"/>
     <LinearLayout
+        android:id="@+id/btn_to_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center"
-        android:onClick="onRegisterToLogin"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
