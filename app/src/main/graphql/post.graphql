@@ -1,5 +1,5 @@
 query GetPosts {
     posts {
-        id image title description ril fek
+        id username image title description ril fek
     }
 }

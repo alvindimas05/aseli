@@ -20,12 +20,14 @@ class PostsAdapter  (
         val post = posts[i]
         val binding = holder.binding
 
-        binding.postDetailsDescription.text = post.description
-        binding.postDetailsRil.text = post.ril.toString()
-        binding.postDetailsRil.text = post.fek.toString()
+        binding.itemPostUsername.text = post.username
+        binding.itemPostDescription.text = post.description
+        binding.itemPostTitle.text = post.title
+        binding.itemPostRil.text = post.ril.toString()
+        binding.itemPostRil.text = post.fek.toString()
 
         Glide.with(holder.binding.root).load("${Client.imagesUrl}/${post.image}")
-            .into(holder.binding.postDetailsImage)
+            .into(holder.binding.itemPostImage)
     }
     class PostHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
 }
