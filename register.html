@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Quantico'],
+                }
+            }
+          }
+        }
+      </script>
+</head> 
+<body background="background.png" class="w-full h-[100vh]">
+    <section class="items-center flex justify-center relative w-full h-screen">
+        <div class="flex max-w-3xl p-20 px-20 items-center border border-white rounded-l">
+            <div class="">
+                <h1 class="font-semibold text-7xl text-white text-center">aseli</h2>
+                <p class="text-sm mt-10 mb-5 text-yellow-400">Registrasi gagal, Username sudah ada !</p>
+
+                <form action="" class="flex flex-col gap-4">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="text" name="username" placeholder="Buat username">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="email" placeholder="Emailmu apa">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="createpw" placeholder="Buat password">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="confirmpw" placeholder="Konfirmasi password">
+                    <label class="p-2 text-white inline-flex items-center text-sm">
+                        <input class="mr-2" type="checkbox">
+                        Setujuin persyaratan
+                    </label>
+                    <button class="bg-[#0E8388] rounded-lg text-white py-2 hover:bg-cyan-500 mt-5">Login</button>
+                    <div class=" mt-5 text-center text-white">
+                        <span>Punya akun?</span>
+                        <a href="#" class="w-1/2 text-cyan-500 hover:underline">Minimal masuk</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+<style>
+    body{
+    background: radial-gradient(226.82% 226.82% at -5.34% -126.82%, #0E8388 0%, #2F2C33 73.96%, #2C3333 100%);
+    }
+</style>
+</html>
