@@ -8,13 +8,18 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import org.aldev.aseli.R
 import org.aldev.aseli.databinding.ActivityRegisterBinding
+import org.aldev.aseli.session.SessionHandler
 import org.aldev.aseli.viewmodels.RegisterViewModel
 
 class RegisterView : AppCompatActivity() {
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var sessionHandler: SessionHandler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sessionHandler = SessionHandler(this)
+        if (sessionHandler.checkSession()) moveToHome()
+
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -36,9 +41,17 @@ class RegisterView : AppCompatActivity() {
         startActivity(Intent(this, RegisterView::class.java))
         finish()
     }
+    private fun moveToHome(){
+        startActivity(Intent(this, HomeView::class.java))
+        finish()
+    }
+    private fun handleSuccess(){
+        sessionHandler.setUserSession(viewModel.authKey)
+        moveToHome()
+    }
     private fun setOnRegisterResult(){
         viewModel.registerFailed.observe(this) {
-            if(!it) return@observe
+            if(it == false) return@observe handleSuccess()
 
             binding.btnRegister.isClickable = true
             binding.registerAlert.visibility = View.VISIBLE

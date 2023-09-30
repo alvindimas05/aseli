@@ -9,8 +9,9 @@ import org.aldev.aseli.misc.Client
 
 class RegisterViewModel : ViewModel() {
     private val client = Client.setClient()
-    val registerFailed = MutableLiveData(false)
+    val registerFailed = MutableLiveData<Boolean?>()
     var failedType = ""
+    var authKey = ""
 
     var username = ""
     var password = ""
@@ -46,6 +47,7 @@ class RegisterViewModel : ViewModel() {
         val mutation = RegisterUserMutation(username, password, verification)
         val res = client.mutation(mutation).execute()
 
+        authKey = res.data!!.registerUser.auth_key.toString()
         failedType = res.data!!.registerUser.reason.toString()
         registerFailed.value = !res.data!!.registerUser.success
     }

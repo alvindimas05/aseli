@@ -9,7 +9,7 @@ import org.aldev.aseli.misc.Client
 
 class LoginViewModel : ViewModel() {
     private val client = Client.setClient()
-    val loginFailed = MutableLiveData(false)
+    val loginFailed = MutableLiveData<Boolean?>()
     var failedType = ""
     var authKey = ""
 

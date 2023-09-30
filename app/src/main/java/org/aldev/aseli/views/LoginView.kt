@@ -8,14 +8,17 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import org.aldev.aseli.R
 import org.aldev.aseli.databinding.ActivityLoginBinding
+import org.aldev.aseli.session.SessionHandler
 import org.aldev.aseli.viewmodels.LoginViewModel
 
 class LoginView : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var sessionHandler: SessionHandler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkForSession()
+        sessionHandler = SessionHandler(this)
+        if (sessionHandler.checkSession()) moveToHome()
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,7 +38,7 @@ class LoginView : AppCompatActivity() {
     }
     private fun setOnLoginResult(){
         viewModel.loginFailed.observe(this) {
-            if(!it) return@observe setUserSession()
+            if(it == false) return@observe handleSuccess()
 
             binding.btnLogin.isClickable = true
             binding.loginAlert.visibility = View.VISIBLE
@@ -48,20 +51,13 @@ class LoginView : AppCompatActivity() {
             binding.loginAlert.text = getString(failedId)
         }
     }
+    private fun handleSuccess(){
+        sessionHandler.setUserSession(viewModel.authKey)
+        moveToHome()
+    }
     private fun moveToRegister(){
         startActivity(Intent(this, RegisterView::class.java))
         finish()
-    }
-    private fun setUserSession(){
-        val pref = getSharedPreferences("user_data", MODE_PRIVATE).edit()
-        pref.putString("auth_key", viewModel.authKey)
-        pref.apply()
-
-        moveToHome()
-    }
-    private fun checkForSession(){
-        val pref = getSharedPreferences("user_data", MODE_PRIVATE)
-        if (pref.contains("auth_key")) moveToHome()
     }
     private fun moveToHome(){
         startActivity(Intent(this, HomeView::class.java))
