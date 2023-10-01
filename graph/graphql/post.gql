@@ -35,6 +35,8 @@ type PostResponse {
     image: String!
     ril: Int!
     fek: Int!
+    user_ril: Boolean!
+    user_fek: Boolean!
     comments: [CommentResponse!]!
 }
 

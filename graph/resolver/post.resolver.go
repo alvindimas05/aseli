@@ -73,7 +73,7 @@ func (r *mutationResolver) SendComment(ctx context.Context, input model.RequestS
 	if err != nil {
 		panic(err)
 	}
-	db.Query("UPDATE $post SET comments += $comment", map[string]interface{}{ "post": input.PostID, "comment": comment.ID })
+	db.Query("UPDATE $post SET comments += $comment", map[string]interface{}{"post": input.PostID, "comment": comment.ID})
 
 	resp := model.ResponseSendComment{
 		CommentID: *comment.ID,
@@ -90,15 +90,20 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.PostResponse, error
 	if err != nil {
 		panic(err)
 	}
-	fields := helper.NormalizeFields(ctx)
+	fields := helper.NormalizeFieldsAsArray(ctx)
 
 	// fields = strings.Replace(fields, "username", "user.username AS username", 1)
-	fields = strings.Replace(fields, "ril", "array::len(ril) AS ril", 1)
-	fields = strings.Replace(fields, "fek", "array::len(fek) AS fek", 1)
+	fields = helper.ReplaceArrayValue(fields, "ril", "array::len(ril) AS ril")
+	fields = helper.ReplaceArrayValue(fields, "fek", "array::len(fek) AS fek")
 
-	sfields := helper.SplitFieldByName(fields, "comments")
+	fields = helper.ReplaceArrayValue(fields, "user_ril", fmt.Sprintf("array::find_index(ril, '%s') != NULL AS user_ril", ctx.Value("user").(string)))
+	fields = helper.ReplaceArrayValue(fields, "user_fek", fmt.Sprintf("array::find_index(fek, '%s') != NULL AS user_fek", ctx.Value("user").(string)))
+
+	cfields := strings.Join(fields, ",")
+
+	sfields := helper.SplitFieldByName(cfields, "comments")
 	sfields[0] = strings.Replace(sfields[0], "username", "user.username AS username", 1)
-	
+
 	cmtCmd := ""
 	if len(sfields) > 1 {
 		sfields[1] = strings.Replace(sfields[1], "username", "user.username AS username", 1)

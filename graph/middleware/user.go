@@ -15,7 +15,7 @@ import (
 	"github.com/surrealdb/surrealdb.go"
 )
 
-var allowed = []string{"IntrospectionQuery", "registerUser", "loginUser", "posts"}
+var allowed = []string{"IntrospectionQuery", "registerUser", "loginUser"}
 
 type RequestBody struct {
 	// Query         string `json:"query"`

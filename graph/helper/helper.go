@@ -14,6 +14,22 @@ import (
 func NormalizeQueryResult(data interface{}) interface{} {
 	return data.([]interface{})[0].(map[string]interface{})["result"]
 }
+func ReplaceArrayValue(data []string, original string, replace string) []string {
+	index := ArrayIndexOf(original, data)
+	if index == -1 {
+		return data
+	}
+	data[index] = replace
+	return data
+}
+func ArrayIndexOf(element string, data []string) (int) {
+	for k, v := range data {
+		if element == v {
+			return k
+		}
+	}
+	return -1    //not found.
+ }
 func SplitFieldByName(input string, name string) []string {
     parts := strings.Split(input, ",")
 
@@ -63,7 +79,9 @@ func GetPreloadString(prefix, name string) string {
 	}
 	return name
 }
-
+func NormalizeFieldsAsArray(ctx context.Context) []string {
+	return GetPreloads(ctx)
+}
 func NormalizeFields(ctx context.Context) string {
 	return strings.Join(GetPreloads(ctx), ",")
 	// arrFields := graphql.CollectAllFields(ctx)
