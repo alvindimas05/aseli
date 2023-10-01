@@ -47,12 +47,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingHorizontal="20dp"
         android:paddingVertical="13dp">
         <ImageButton
             android:id="@+id/item_post_ril_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/icon_ril"
             android:scaleType="fitXY"
             android:background="#00000000"/>
@@ -62,12 +63,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:gravity="bottom"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:text="0" />
         <ImageButton
             android:id="@+id/item_post_fek_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/icon_fek"
             android:layout_marginStart="15dp"
             android:scaleType="fitXY"
@@ -78,19 +79,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:gravity="bottom"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:text="0" />
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="nyata"-->
-<!--            android:layout_marginStart="5dp"-->
-<!--            android:gravity="bottom"-->
-<!--            android:textSize="13sp"/>-->
         <ImageButton
             android:id="@+id/item_post_comment_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/icon_komen"
             android:scaleType="fitXY"
             android:background="#00000000"
@@ -101,18 +95,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:gravity="bottom"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:text="0"/>
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="komen"-->
-<!--            android:layout_marginStart="5dp"-->
-<!--            android:textSize="13sp"-->
-<!--            android:gravity="bottom"/>-->
         <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/icon_share"
             android:scaleType="fitXY"
             android:background="#00000000"

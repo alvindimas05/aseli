@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.aldev.aseli.adapter.PostsAdapter
 import org.aldev.aseli.databinding.ActivityHomeBinding
+import org.aldev.aseli.session.SessionHandler
 import org.aldev.aseli.viewmodels.HomeViewModel
 
 class HomeView : AppCompatActivity() {
@@ -18,12 +19,13 @@ class HomeView : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        viewModel.setClient(SessionHandler(this).getSessionKey())
         viewModel.getPosts()
         setBindable()
     }
     private fun setBindable(){
         viewModel.posts.observe(this){
-            postsAdapter = PostsAdapter(this@HomeView.layoutInflater, it!!)
+            postsAdapter = PostsAdapter(this@HomeView.layoutInflater, it!!, viewModel)
             binding.root.apply {
                 adapter = postsAdapter
                 layoutManager = LinearLayoutManager(this@HomeView)

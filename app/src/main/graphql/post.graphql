@@ -1,5 +1,13 @@
 query GetPosts {
     posts {
-        id username image title description ril fek
+        id username image title description ril fek user_ril user_fek comments_total
     }
+}
+
+mutation SendRil($post_id: String!) {
+    sendRil(post_id: $post_id)
+}
+
+mutation SendFek($post_id: String!) {
+    sendFek(post_id: $post_id)
 }

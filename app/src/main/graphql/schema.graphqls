@@ -77,7 +77,13 @@ type PostResponse {
 
   fek: Int!
 
+  user_ril: Boolean!
+
+  user_fek: Boolean!
+
   comments: [CommentResponse!]!
+
+  comments_total: Int!
 }
 
 type Query {
