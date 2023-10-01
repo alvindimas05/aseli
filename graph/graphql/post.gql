@@ -38,6 +38,7 @@ type PostResponse {
     user_ril: Boolean!
     user_fek: Boolean!
     comments: [CommentResponse!]!
+    comments_total: Int!
 }
 
 input requestSendComment {

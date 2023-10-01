@@ -99,6 +99,8 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.PostResponse, error
 	fields = helper.ReplaceArrayValue(fields, "user_ril", fmt.Sprintf("array::find_index(ril, '%s') != NULL AS user_ril", ctx.Value("user").(string)))
 	fields = helper.ReplaceArrayValue(fields, "user_fek", fmt.Sprintf("array::find_index(fek, '%s') != NULL AS user_fek", ctx.Value("user").(string)))
 
+	fields = helper.ReplaceArrayValue(fields, "comments_total", "array::len(comments) AS comments_total")
+
 	cfields := strings.Join(fields, ",")
 
 	sfields := helper.SplitFieldByName(cfields, "comments")
