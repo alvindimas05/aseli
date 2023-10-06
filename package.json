@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
-    "@tsconfig/svelte": "^5.0.0",
+    "@tsconfig/svelte": "^5.0.2",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
@@ -24,9 +24,12 @@
   },
   "type": "module",
   "dependencies": {
-    "@apollo/client": "^3.8.4",
+    "@apollo/client": "^3.8.5",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "graphql": "^16.8.1",
+    "sass": "^1.69.0",
     "svelte-apollo": "^0.5.0",
+    "svelte-fa": "^3.0.4",
     "vite-tsconfig-paths": "^4.2.1"
   }
 }

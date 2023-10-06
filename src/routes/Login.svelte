@@ -3,7 +3,7 @@
     import { LOGIN } from "@gql/user";
     import client from "@gql/client";
     import type { FetchResult } from "@apollo/client";
-    import { Link } from "svelte-routing";
+    import { Link, navigate } from "svelte-routing";
 
 	setClient(client);
 
@@ -26,7 +26,11 @@
                 username: data.get("username"),
                 password: data.get("password")
             }});
-            loginSuccess = res.data!.loginUser.success
+            loginSuccess = res.data!.loginUser.success;
+            if(loginSuccess){
+                localStorage.setItem("auth_key", res.data!.loginUser.auth_key);
+                navigate("/");
+            }
         } catch(err){
             console.log(err);
         }

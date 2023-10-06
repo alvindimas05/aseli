@@ -1,0 +1,181 @@
+<script lang="ts">
+    import { link } from "svelte-routing";
+    import Fa from "svelte-fa";
+	import { query, setClient, type ReadableQuery } from "svelte-apollo";
+    import client, { url } from "@gql/client";
+    import { faArrowRightFromBracket, faComment, faEllipsisV, faHome, faShare, faThumbsDown, faThumbsUp, faUser } from "@fortawesome/free-solid-svg-icons";
+    import { POSTS } from "@gql/post";
+
+    setClient(client);
+
+    interface PostsResponse {
+        posts: {
+            id: string,
+            username: string,
+            title: string,
+            description: string,
+            ril: number,
+            fek: number,
+            comments_total: number,
+            user_ril: boolean,
+            user_fek: boolean,
+            image: string
+        }[]
+    }
+
+    const posts: ReadableQuery<PostsResponse> = query(POSTS);
+</script>
+<style lang="scss">
+    @import url('https://fonts.googleapis.com/css2?family=Chango&family=Dancing+Script:wght@600&family=IBM+Plex+Sans:wght@600&family=Poppins:wght@500&family=Quantico&display=swap');
+    aside span {
+        @apply text-white;
+    }
+    .logo {
+        font-family: 'Quantico', sans-serif;
+    }
+    .konten::-webkit-scrollbar {
+        display: none;
+    }
+    .konten {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+<div class="w-full flex">
+    <aside id="sidebar" class="w-[300px] h-screen" aria-label="Sidebar">
+        <div class="h-full pl-4 pr-3  py-4 overflow-y-auto border-r border-white">
+            <a href="/" use:link  class="flex items-center pl-2.5 mb-5">
+                <span class="logo self-center text-4xl whitespace-nowrap text-white my-8">aseli</span>
+            </a>
+            <ul class="space-y-2 text-xl">
+                <li>
+                    <a href="/" use:link  class="flex items-center p-4 text-gray-900 rounded-lg text-white bg-gray-700 ">
+                    <Fa class="text-white text-2xl" icon={faHome}/>
+                    <!-- <img src="/icon/home.png" class="w-[25px] h-[25px]" alt="home"> -->
+                    <span class="ml-3">Home</span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="explore.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <img src="/icon/explore.png" class="w-[25px] h-[25px]" alt="explore">
+                    <span class="ml-3">Eksplorasi</span>
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <img src="icon/pesan.png" class="w-[25px] h-[25px]" alt="pesan">
+                    <span class="flex-1 ml-3 whitespace-nowrap">Pesan</span>
+                    <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-base font-medium bg-[#2d87e2] rounded-full text-white">3</span>
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                        <svg class="w-[25px] h-[25px]" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0,0,256,256" style="fill:#000000;">
+                            <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M47.16,21.221l-5.91,-0.966c-0.346,-1.186 -0.819,-2.326 -1.411,-3.405l3.45,-4.917c0.279,-0.397 0.231,-0.938 -0.112,-1.282l-3.889,-3.887c-0.347,-0.346 -0.893,-0.391 -1.291,-0.104l-4.843,3.481c-1.089,-0.602 -2.239,-1.08 -3.432,-1.427l-1.031,-5.886c-0.084,-0.478 -0.499,-0.828 -0.985,-0.828h-5.5c-0.49,0 -0.908,0.355 -0.987,0.839l-0.956,5.854c-1.2,0.345 -2.352,0.818 -3.437,1.412l-4.83,-3.45c-0.399,-0.285 -0.942,-0.239 -1.289,0.106l-3.887,3.887c-0.343,0.343 -0.391,0.883 -0.112,1.28l3.399,4.863c-0.605,1.095 -1.087,2.254 -1.438,3.46l-5.831,0.971c-0.482,0.08 -0.836,0.498 -0.836,0.986v5.5c0,0.485 0.348,0.9 0.825,0.985l5.831,1.034c0.349,1.203 0.831,2.362 1.438,3.46l-3.441,4.813c-0.284,0.397 -0.239,0.942 0.106,1.289l3.888,3.891c0.343,0.343 0.884,0.391 1.281,0.112l4.87,-3.411c1.093,0.601 2.248,1.078 3.445,1.424l0.976,5.861c0.079,0.481 0.496,0.834 0.985,0.834h5.5c0.485,0 0.9,-0.348 0.984,-0.825l1.045,-5.89c1.199,-0.353 2.348,-0.833 3.43,-1.435l4.905,3.441c0.398,0.281 0.938,0.232 1.282,-0.111l3.888,-3.891c0.346,-0.347 0.391,-0.894 0.104,-1.292l-3.498,-4.857c0.593,-1.08 1.064,-2.222 1.407,-3.408l5.918,-1.039c0.479,-0.084 0.827,-0.5 0.827,-0.985v-5.5c0.001,-0.49 -0.354,-0.908 -0.838,-0.987zM25,32c-3.866,0 -7,-3.134 -7,-7c0,-3.866 3.134,-7 7,-7c3.866,0 7,3.134 7,7c0,3.866 -3.134,7 -7,7z"></path></g></g>
+                        </svg>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Setelan</span>
+                    </a>
+                </li> -->
+                {#if localStorage.getItem("auth_key") != null}
+                <li>
+                    <a href="profil.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <!-- <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil"> -->
+                    <Fa class="text-white text-2xl" icon={faUser}/>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Profil</span>
+                    </a>
+                </li>
+                {:else}
+                <li>
+                    <a href="/login" use:link  class="flex items-center p-4 text-gray-900 rounded-lg text-white  hover:bg-gray-700 ">
+                    <!-- <img src="icon/login.png" class="w-[25px] h-[25px]" alt="login"> -->
+                    <Fa class="text-white text-2xl" icon={faArrowRightFromBracket}/>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Login</span>
+                    </a>
+                </li>
+                {/if}
+            </ul>
+
+        </div>
+    </aside> 
+    <div class="konten container h-[100vh] mx-auto overflow-y-scroll w-[900px]">
+        {#if $posts.data}
+            {#each $posts.data.posts as post}
+                <div class="grid grid-cols-1 mx-auto my-10 w-[600px] rounded-xl drop-shadow-2xl bg-[#222]">
+                    <div class="flex items-center py-4 pr-4">
+                        <div class="grid grid-cols-2 place-items-center">
+                            <!-- <img src="/icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white"> -->
+                            <Fa class="text-2xl text-white ms-5" icon={faUser}/>
+                            <span class="text-white text-lg ms-3">{post.username}</span>
+                        </div>
+                        <!-- <img src="/icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto"> -->
+                        <Fa class="text-3xl text-white ms-auto" icon={faEllipsisV}/>
+                    </div>
+                    <img src={`${url}/images/${post.image}`} alt="Post"  class="w-full">
+        
+                    <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
+                        <!-- <img src="/icon/nyata.png" class="w-[30px] h-[30px]"> -->
+                        <Fa class="text-2xl text-white" icon={faThumbsUp}/>
+                        <span class="text-white text-lg ml-1">{post.ril}</span>
+                        <!-- <img src="/icon/nyata.png" class="w-[30px] h-[30px] ms-2 rotate-180"> -->
+                        <Fa class="text-2xl text-white ms-2" icon={faThumbsDown}/>
+                        <span class="text-white text-lg ml-1">{post.fek}</span>
+                        <!-- <img src="/icon/komen.png" class="w-[30px] h-[30px] ms-2"> -->
+                        <Fa class="text-2xl text-white ms-2" icon={faComment}/>
+                        <span class="text-white text-lg ml-1">{post.comments_total}</span>
+                        <!-- <img src="/icon/share.png" class="w-[30px] h-[30px] ms-2"> -->
+                        <Fa class="text-2xl text-white ms-2" icon={faShare}/>
+                    </div>
+            
+                    <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
+                        <div class="text-white my-3 text-2xl">{post.title}</div>
+                        <div class="text-white">{post.description}</div>
+                        <!-- <div class="text-[#ADD8E6]">Baca selengkapnya...</div> -->
+                        <!-- <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div> -->
+                    </div>
+                </div>
+            {/each}
+        {/if}
+    </div>
+    <div class="w-[325px] h-screen">
+        <div class="h-full pl-4 pr-3 pt-12 overflow-y-auto">
+            <div class="grid grid-cols-1 text-white rounded-xl bg-[#1F1913] pt-4">
+                <span class="text-xl mx-4 my-2">Trending</span>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Meme</div>
+                    <div class="text-xl">Top singko orang hitam</div>
+                    <div class="text-[#707070]">180 postingan</div>
+                </div>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Ingfo</div>
+                    <div class="text-xl">Disaat bapak hitam ini melihat hpnya gaiss</div>
+                    <div class="text-[#707070]">217 postingan</div>
+                </div>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Tumtor</div>
+                    <div class="text-xl">Tutorial menikahi vtuber</div>
+                    <div class="text-[#707070]">180 postingan</div>
+                </div>
+                <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
+                    <div class="text-[#707070]">Vingral</div>
+                    <div class="text-xl">Cipung ternyata lebih suka Ronaldo daripada Messi?</div>
+                    <div class="text-[#707070]">180 postingan</div>
+                </div>
+                <div class="text-lg text-[#4488ee] py-3 px-4 hover:bg-[#4F4943] rounded-t rounded-xl">Tampilkan lebih banyak</div>
+            </div>
+            <div class="text-sm text-[#707070] text-center px-3 mt-3 ">
+                <span class="hover:underline cursor-pointer">Persyaratan Layanan</span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Kebijakan Privasi</span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Aksesibilitas</span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Informasi Iklan </span>
+                <span>.</span>
+                <span class="hover:underline cursor-pointer">Kebijakan Penggunaan Cookie</span>
+            </div>
+            <div class="copyright text-md text-white text-center mt-3">
+                © 2023 aseli
+            </div>
+        </div>
+    </div>
+</div>
