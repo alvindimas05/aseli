@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"fmt"
 
 	"github.com/surrealdb/surrealdb.go"
 )
@@ -31,6 +32,7 @@ func UserMiddleware(next http.Handler) http.Handler {
 		body := RequestBody{}
 		json.Unmarshal(data, &body)
 
+		fmt.Println(r.Method)
 		// Check if has file
 		if (!strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") &&
 			// Check if allowed query or mutation

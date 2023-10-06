@@ -37,11 +37,11 @@ func SetServer() {
 	host, port := os.Getenv("SERVER_HOST"), os.Getenv("SERVER_PORT")
 	router := chi.NewRouter()
 
+	router.Use(middleware.CorsMiddleware)
 	router.Use(middleware.UserMiddleware)
 	router.Use(cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"},
 		AllowCredentials: true,
-		Debug:            false,
 	}).Handler)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{}}))
