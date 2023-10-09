@@ -1,9 +1,9 @@
 @echo off
 
 if "%1" == "run"  (
-    go build -o aseli-api.exe && ./aseli-api.exe
+    go build -o aseli-api.exe && .\aseli-api.exe
 ) else if "%1" == "start" (
-    go build -o aseli-api.exe && ./aseli-api.exe
+    go build -o aseli-api.exe && .\aseli-api.exe
 ) else if "%1" == "generate" (
     go get github.com/99designs/gqlgen && go run github.com/99designs/gqlgen generate
 ) else if "%1" == "database" (
