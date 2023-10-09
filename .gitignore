@@ -4,4 +4,4 @@ graph/model
 *.exe
 
 images
-aseli-api
+aseli-api*
