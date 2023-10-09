@@ -1,8 +1,8 @@
 @echo off
 
-if "%1" == "run" ||  (
+if "%1" == "run"  (
     go build -o aseli-api && ./aseli-api
-) else if "%1" == "start" ||  (
+) else if "%1" == "start" (
     go build -o aseli-api && ./aseli-api
 ) else if "%1" == "generate" (
     go get github.com/99designs/gqlgen && go run github.com/99designs/gqlgen generate
