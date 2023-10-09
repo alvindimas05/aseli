@@ -10,25 +10,25 @@
 <body class="w-full flex">
 
     <aside id="sidebar" class="w-[300px] h-screen" aria-label="Sidebar">
-        <div class="h-full pl-4 pr-3  py-4 overflow-y-auto border-r border-white">
+        <div class="h-full pl-4 pr-3  py-4 overflow-y-auto border-r border-[#656565]">
             <a href="#" class="flex items-center pl-2.5 mb-5">
                 <span class="logo self-center text-4xl whitespace-nowrap text-white my-8">aseli</span>
             </a>
             <ul class="space-y-2 text-xl">
                 <li>
-                    <a href="home.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <a href="home.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700/[0.5] hover:drop-shadow-md">
                     <img src="/icon/home.png" class="w-[25px] h-[25px]" alt="home">
                     <span class="ml-3">Home</span>
                     </a>
                 </li>
                 <li>
-                    <a href="explore.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white bg-gray-700 ">
+                    <a href="explore.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white bg-gray-600/[0.5] drop-shadow-md">
                     <img src="/icon/explore.png" class="w-[25px] h-[25px]" alt="explore">
                     <span class="ml-3">Eksplorasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="profil.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700 ">
+                    <a href="profil.html" class="flex items-center p-4 text-gray-900 rounded-lg text-white hover:bg-gray-700/[0.5] hover:drop-shadow-md">
                     <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil">
                     <span class="flex-1 ml-3 whitespace-nowrap">Profil</span>
                     </a>
@@ -60,7 +60,7 @@
     </aside> 
 
     <div class="konten container w-[900px] h-[100vh] mx-auto overflow-y-scroll">
-        <input type="search" placeholder="Cari..." class="my-5 py-2 px-4 w-full rounded-full bg-[#0000] border border-white text-white placeholder:text-white">
+        <input type="search" placeholder="Cari..." class="my-5 py-2 px-4 w-full rounded-full bg-[#0000] border border-white text-white placeholder:text-white focus:outline-none">
         <div class="category-list flex mb-5 gap-2 overflow-x-scroll">
             <button class="py-2 px-4 rounded-full border-[2px] border-white text-white hover:bg-white hover:text-black focus:bg-white focus:text-black">meme</button>
             <button class="py-2 px-4 rounded-full border-[2px] border-white text-white hover:bg-white hover:text-black focus:bg-white focus:text-black">ingfo</button>
@@ -93,6 +93,20 @@
             <img src="https://placehold.co/300" alt="konten" class="konten7">
             <img src="https://placehold.co/300" alt="konten" class="konten8">
             <img src="https://placehold.co/300" alt="konten" class="konten9">
+        </div>
+        <div class="text-sm text-[#707070] text-center px-3 mt-5">
+            <span class="hover:underline cursor-pointer">Persyaratan Layanan</span>
+            <span>.</span>
+            <span class="hover:underline cursor-pointer">Kebijakan Privasi</span>
+            <span>.</span>
+            <span class="hover:underline cursor-pointer">Aksesibilitas</span>
+            <span>.</span>
+            <span class="hover:underline cursor-pointer">Informasi Iklan </span>
+            <span>.</span>
+            <span class="hover:underline cursor-pointer">Kebijakan Penggunaan Cookie</span>
+        </div>
+        <div class="copyright text-md text-white text-center my-3">
+            © 2023 aseli
         </div>
     </div>
 
