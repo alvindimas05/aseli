@@ -4,7 +4,9 @@
     import client from "@gql/client";
     import type { FetchResult } from "@apollo/client";
     import { Link } from "svelte-routing";
+    import checkSessionRedirect from "misc/Session";
 
+    checkSessionRedirect();
 	setClient(client);
 
     interface RegisterResponse {
@@ -60,10 +62,10 @@
                 {/if}
                 </p>
                 <form on:submit|preventDefault={register}  class="flex flex-col gap-4">
-                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="text" name="username" placeholder="Buat username">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="text" name="username" placeholder="Username">
                     <!-- <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="email" placeholder="Emailmu apa"> -->
-                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="password" placeholder="Buat password">
-                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="verification_password" placeholder="Konfirmasi password">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="password" placeholder="Password">
+                    <input class="text-white bg-transparent rounded-lg p-2 border border-[#0E8388]" type="password" name="verification_password" placeholder="Confirm password">
                     <!-- <label class="p-2 text-white inline-flex items-center text-sm">
                         <input class="mr-2" type="checkbox">
                         Setujuin persyaratan

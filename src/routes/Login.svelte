@@ -4,7 +4,11 @@
     import client from "@gql/client";
     import type { FetchResult } from "@apollo/client";
     import { Link, navigate } from "svelte-routing";
+    import checkSessionRedirect from "misc/Session";
+    import { onMount } from "svelte";
 
+
+    onMount(() => checkSessionRedirect());
 	setClient(client);
 
     interface LoginResponse {
@@ -38,8 +42,8 @@
 </script>
 
 <div class="w-full h-[100vh]">
-    <section class="items-center flex justify-center relative w-full h-screen">
-        <div class="flex max-w-3xl p-20 items-center border border-white rounded-l">
+    <section class="items-center flex justify-center relative w-full h-screen md:text-lg">
+        <div class="flex max-w-3xl p-20 items-center rounded-lg md:border md:border-white">
             <div>
                 <h1 class="font-semibold text-7xl text-white text-center mb-7">aseli</h1>
                 <p class="text-sm text-yellow-400 text-center mb-3" class:hidden={loginSuccess != false}>Wrong username or password!</p>
@@ -51,7 +55,7 @@
                         <input class="mr-2 rounded-3xl" type="checkbox" checked >
                         Ingatin
                     </label> -->
-                    <p class="p-2 text-right text-cyan-500 hover:text-cyan-300">Lupa Password?</p>
+                    <p class="p-2 text-right text-cyan-500 hover:text-cyan-300">Forgot Password?</p>
                     <button class="bg-[#0E8388] rounded-lg text-white py-2 hover:bg-cyan-500">Login</button>
                     <div class=" mt-5 text-center text-white">
                         <span>Gak punya akun?</span>
