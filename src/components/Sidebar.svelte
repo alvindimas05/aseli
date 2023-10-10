@@ -25,7 +25,7 @@
         </a>
         <ul class="space-y-2 text-xl" id="sidebar-action">
             <li>
-                <a href="/" use:link  class="flex items-center p-4 text-gray-900 rounded-lg text-white" class:selected={location.pathname === "/"}>
+                <a href="/" use:link  class="flex items-center p-4 rounded-lg text-white" class:selected={location.pathname === "/"}>
                 <Fa class="text-white text-2xl" icon={faHome}/>
                 <!-- <img src="/icon/home.png" class="w-[25px] h-[25px]" alt="home"> -->
                 <span class="ml-3">Home</span>
@@ -54,7 +54,7 @@
             </li> -->
             {#if localStorage.getItem("auth_key") != null}
             <li>
-                <a href="/profile" use:link class="flex items-center p-4 text-gray-900 rounded-lg text-white" class:selected={location.pathname === "/profile"}>
+                <a href="/profile" use:link class="flex items-center p-4 rounded-lg text-white" class:selected={location.pathname === "/profile"}>
                 <!-- <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil"> -->
                 <Fa class="text-white text-2xl" icon={faUser}/>
                 <span class="flex-1 ml-3 whitespace-nowrap">Profil</span>
@@ -62,7 +62,7 @@
             </li>
             {:else}
             <li>
-                <a href="/login" use:link  class="flex items-center p-4 text-gray-900 rounded-lg text-white">
+                <a href="/login" use:link  class="flex items-center p-4 rounded-lg text-white">
                 <!-- <img src="icon/login.png" class="w-[25px] h-[25px]" alt="login"> -->
                 <Fa class="text-white text-2xl" icon={faArrowRightFromBracket}/>
                 <span class="flex-1 ml-3 whitespace-nowrap">Login</span>

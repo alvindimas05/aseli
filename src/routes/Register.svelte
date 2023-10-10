@@ -18,7 +18,7 @@
     }
     
     const registerUser = mutation(REGISTER);
-    let registerSuccess = false;
+    // let registerSuccess = false;
     let failedReason: String = "";
 
     async function register(e: SubmitEvent & {
@@ -27,7 +27,7 @@
         try {
             const data = new FormData(e.currentTarget);
             if(data.get("password") != data.get("verification_password")){
-                registerSuccess = false;
+                // registerSuccess = false;
                 failedReason = "verification password";
                 return
             }
@@ -38,7 +38,7 @@
                 verification_password: data.get("verification_password")
             }});
             
-            registerSuccess = res.data!.registerUser.success;
+            // registerSuccess = res.data!.registerUser.success;
             failedReason = res.data!.registerUser.reason;
             console.log(res.data!.registerUser.reason);
         } catch(err){
