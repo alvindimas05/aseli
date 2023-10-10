@@ -1,26 +1,14 @@
 <script lang="ts">
-    import Fa from "svelte-fa";
 	import { query, setClient, type ReadableQuery } from "svelte-apollo";
-    import client, { url } from "@gql/client";
-    import { faComment, faEllipsisV, faShare, faThumbsDown, faThumbsUp, faUser } from "@fortawesome/free-solid-svg-icons";
+    import client from "@gql/client";
     import { POSTS } from "@gql/post";
     import Sidebar from "components/Sidebar.svelte";
+    import Post, { type PostData } from "components/Post.svelte";
 
     setClient(client);
 
     interface PostsResponse {
-        posts: {
-            id: string,
-            username: string,
-            title: string,
-            description: string,
-            ril: number,
-            fek: number,
-            comments_total: number,
-            user_ril: boolean,
-            user_fek: boolean,
-            image: string
-        }[]
+        posts: PostData[]
     }
 
     const posts: ReadableQuery<PostsResponse> = query(POSTS);
@@ -39,39 +27,7 @@
     <div class="konten container h-[100vh] mx-auto overflow-y-scroll w-[900px]">
         {#if $posts.data}
             {#each $posts.data.posts as post}
-                <div class="grid grid-cols-1 mx-auto my-10 w-[600px] rounded-xl drop-shadow-2xl bg-[#222]">
-                    <div class="flex items-center py-4 pr-4">
-                        <div class="grid grid-cols-2 place-items-center">
-                            <!-- <img src="/icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white"> -->
-                            <Fa class="text-2xl text-white ms-5" icon={faUser}/>
-                            <span class="text-white text-lg ms-3">{post.username}</span>
-                        </div>
-                        <!-- <img src="/icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto"> -->
-                        <Fa class="text-3xl text-white ms-auto" icon={faEllipsisV}/>
-                    </div>
-                    <img src={`${url}/images/${post.image}`} alt="Post"  class="w-full">
-        
-                    <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
-                        <!-- <img src="/icon/nyata.png" class="w-[30px] h-[30px]"> -->
-                        <Fa class="text-2xl text-white" icon={faThumbsUp}/>
-                        <span class="text-white text-lg ml-1">{post.ril}</span>
-                        <!-- <img src="/icon/nyata.png" class="w-[30px] h-[30px] ms-2 rotate-180"> -->
-                        <Fa class="text-2xl text-white ms-2" icon={faThumbsDown}/>
-                        <span class="text-white text-lg ml-1">{post.fek}</span>
-                        <!-- <img src="/icon/komen.png" class="w-[30px] h-[30px] ms-2"> -->
-                        <Fa class="text-2xl text-white ms-2" icon={faComment}/>
-                        <span class="text-white text-lg ml-1">{post.comments_total}</span>
-                        <!-- <img src="/icon/share.png" class="w-[30px] h-[30px] ms-2"> -->
-                        <Fa class="text-2xl text-white ms-2" icon={faShare}/>
-                    </div>
-            
-                    <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
-                        <div class="text-white my-3 text-2xl">{post.title}</div>
-                        <div class="text-white">{post.description}</div>
-                        <!-- <div class="text-[#ADD8E6]">Baca selengkapnya...</div> -->
-                        <!-- <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div> -->
-                    </div>
-                </div>
+                <Post {post}/>
             {/each}
         {/if}
     </div>
