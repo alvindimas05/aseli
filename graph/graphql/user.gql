@@ -44,7 +44,7 @@ type loginResponse {
 
 type Query {
     users: [UserResponse!]!
-    getUser(id: String!): UserResponse!
+    getUser(id: String): UserResponse!
 }
 
 type Mutation {

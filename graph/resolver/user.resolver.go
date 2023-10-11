@@ -114,7 +114,7 @@ func (r *mutationResolver) ChangeProfileImage(ctx context.Context, image graphql
 	}
 
 	imgName := helper.SaveImage(image)
-	db.Update(ctx.Value("user").(string), map[string]interface{}{ "profile_image": &imgName })
+	db.Update(ctx.Value("user").(string), map[string]interface{}{"profile_image": &imgName})
 
 	defer db.Close()
 	return imgName, nil
@@ -143,14 +143,21 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.UserResponse, error
 }
 
 // GetUser is the resolver for the getUser field.
-func (r *queryResolver) GetUser(ctx context.Context, id string) (*model.UserResponse, error) {
+func (r *queryResolver) GetUser(ctx context.Context, id *string) (*model.UserResponse, error) {
 	db, err := database.Connect()
 	if err != nil {
 		panic(err)
 	}
 
+	queryId := ""
+	if id == nil {
+		queryId = ctx.Value("user").(string)
+	} else {
+		queryId = *id
+	}
+
 	fields := helper.NormalizeFields(ctx)
-	data, err := db.Query(fmt.Sprintf("SELECT %s FROM $id", fields), map[string]interface{}{"id": id})
+	data, err := db.Query(fmt.Sprintf("SELECT %s FROM $id", fields), map[string]interface{}{"id": queryId})
 	if err != nil {
 		panic(err)
 	}
