@@ -12,7 +12,6 @@ import (
 	"path/filepath"
 
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/rs/cors"
 	// "github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
@@ -39,10 +38,6 @@ func SetServer() {
 
 	router.Use(middleware.CorsMiddleware)
 	router.Use(middleware.UserMiddleware)
-	router.Use(cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "http://0.0.0.0:5173", "http://127.0.0.1:5173"},
-		AllowCredentials: true,
-	}).Handler)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{}}))
 	// srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{}}))
