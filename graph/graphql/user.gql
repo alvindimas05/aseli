@@ -2,6 +2,7 @@ type User {
     id: String
     username: String!
     password: String!
+    profile_image: String
 }
 
 type AuthUser {
@@ -13,6 +14,7 @@ type AuthUser {
 type UserResponse {
     id: String!
     username: String!
+    profile_image: String
 }
 
 # Register
@@ -48,4 +50,5 @@ type Query {
 type Mutation {
     registerUser(input: registerRequest!): registerResponse!
     loginUser(input: loginRequest!): loginResponse!
+    changeProfileImage(image: Upload!): String!
 }

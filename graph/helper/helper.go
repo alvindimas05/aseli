@@ -2,6 +2,9 @@ package helper
 
 import (
 	"context"
+	"io"
+	"os"
+	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -9,6 +12,7 @@ import (
 	// "reflect"
 
 	"github.com/99designs/gqlgen/graphql"
+	"github.com/google/uuid"
 )
 
 func NormalizeQueryResult(data interface{}) interface{} {
@@ -139,3 +143,18 @@ func GetCurrentDateTime() string {
 
 //     return newStructValue.Interface()
 // }
+func SaveImage(image graphql.Upload) string {
+	filename := strings.ReplaceAll(uuid.New().String(), "-", "")
+	imgPath := path.Join(MkdirImages(), filename)
+
+	dest, err := os.Create(imgPath)
+	if err != nil {
+		panic(err)
+	}
+	defer dest.Close()
+
+	if _, err := io.Copy(dest, image.File); err != nil {
+		panic(err)
+	}
+	return filename
+}

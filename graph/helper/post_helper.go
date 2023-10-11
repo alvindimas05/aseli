@@ -5,34 +5,13 @@ import (
 	"aseli-api/graph/model"
 	"context"
 	"fmt"
-	"io"
 	"os"
 	"path"
 	"path/filepath"
-	"strings"
-
-	"github.com/99designs/gqlgen/graphql"
-	"github.com/google/uuid"
 	"github.com/surrealdb/surrealdb.go"
 )
 
 type Post struct{}
-
-func (_p Post) SaveImage(image graphql.Upload) string {
-	filename := strings.ReplaceAll(uuid.New().String(), "-", "")
-	imgPath := path.Join(MkdirImages(), filename)
-
-	dest, err := os.Create(imgPath)
-	if err != nil {
-		panic(err)
-	}
-	defer dest.Close()
-
-	if _, err := io.Copy(dest, image.File); err != nil {
-		panic(err)
-	}
-	return filename
-}
 
 func (_p Post) ValidatePost(post_id string) bool {
 	db, err := database.Connect()
