@@ -40,7 +40,7 @@ func SetServer() {
 	router.Use(middleware.CorsMiddleware)
 	router.Use(middleware.UserMiddleware)
 	router.Use(cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedOrigins:   []string{"http://localhost:5173", "http://0.0.0.0:5173", "http://127.0.0.1:5173"},
 		AllowCredentials: true,
 	}).Handler)
 
