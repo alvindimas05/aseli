@@ -22,6 +22,8 @@
     import { FEK, RIL } from "@gql/post";
     export let post: PostData;
 
+
+    // Ril only
     const sendRil = mutation(RIL);
     let ril = writable(post.ril);
     let user_ril = writable(post.user_ril);
@@ -30,6 +32,7 @@
         sendRil: boolean
     }
     async function onRil(){
+        if(!checkForAuth()) return;
         try {
             const rilRes: FetchResult<RilResult> = await sendRil({ variables: { post_id: post.id } });
             const isRil = rilRes.data!!.sendRil!!;
@@ -40,6 +43,8 @@
         }
     }
 
+
+    // Fek only
     const sendFek = mutation(FEK);
     let fek = writable(post.fek);
     let user_fek = writable(post.user_fek);
@@ -48,6 +53,7 @@
         sendFek: boolean
     }
     async function onFek(){
+        if(!checkForAuth()) return;
         try {
             const fekRes: FetchResult<FekResult> = await sendFek({ variables: { post_id: post.id } });
             const isFek = fekRes.data!!.sendFek!!;
@@ -56,6 +62,14 @@
         } catch(err){
             console.error(err);
         }
+    }
+
+    function checkForAuth(){
+        const auth = localStorage.getItem("auth_key") != null;
+        if(!auth){
+            alert("You can't ril or fek before login or register!")
+        }
+        return auth;
     }
 </script>
 <div class="grid grid-cols-1 mx-auto my-10 w-[600px] rounded-xl drop-shadow-2xl bg-[#222]">

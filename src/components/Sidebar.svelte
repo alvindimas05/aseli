@@ -1,6 +1,6 @@
 <script lang="ts">
     import { link } from "svelte-routing";
-    import { faArrowRightFromBracket, faHome, faUser } from "@fortawesome/free-solid-svg-icons";
+    import { faArrowRightFromBracket, faHome, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
 </script>
 <style lang="scss">
@@ -66,6 +66,13 @@
                 <!-- <img src="icon/login.png" class="w-[25px] h-[25px]" alt="login"> -->
                 <Fa class="text-white text-2xl" icon={faArrowRightFromBracket}/>
                 <span class="flex-1 ml-3 whitespace-nowrap">Login</span>
+                </a>
+            </li>
+            <li>
+                <a href="/register" use:link  class="flex items-center p-4 rounded-lg text-white">
+                <!-- <img src="icon/login.png" class="w-[25px] h-[25px]" alt="login"> -->
+                <Fa class="text-white text-2xl" icon={faUserPlus}/>
+                <span class="flex-1 ml-3 whitespace-nowrap">Register</span>
                 </a>
             </li>
             {/if}
