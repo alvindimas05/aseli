@@ -5,7 +5,8 @@
     import Sidebar from "components/Sidebar.svelte";
     import { query, setClient, type ReadableQuery, mutation } from "svelte-apollo";
 
-    setClient(client);
+    // @ts-ignore
+    setClient(clientUpload);
 
     interface User {
         user: {
@@ -23,7 +24,7 @@
     const posts: ReadableQuery<Posts> = query(USER_POSTS, { variables: { username } });
     let profile: string | null = null;
 
-    $: $user.data, (() => profile = $user.data?.user.profile_image ? `${url}/images/${$user.data?.user.profile_image}` :     "https://picsum.photos/200")();
+    $: $user.data, (() => profile = $user.data?.user.profile_image ? `${url}/images/${$user.data?.user.profile_image}` : "https://picsum.photos/200")();
 
     const toBase64 = (file: File) => new Promise<string | ArrayBuffer | null>((resolve, reject) => {
         const reader = new FileReader();
@@ -40,11 +41,9 @@
         const file = inputFile.files!![0]
         profile = (await toBase64(file)) as string;
 
-        setClient(clientUpload);
         await mutateProfile({
             variables: { image: file }
         });
-        setClient(client);
     }
 </script>
 <style>

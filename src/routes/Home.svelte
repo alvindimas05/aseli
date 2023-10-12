@@ -5,6 +5,7 @@
     import Sidebar from "components/Sidebar.svelte";
     import Post, { type PostData } from "components/Post.svelte";
 
+    // @ts-ignore
     setClient(client);
 
     interface PostsResponse {

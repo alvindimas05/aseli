@@ -32,6 +32,7 @@
     async function onRil(){
         if(!checkForAuth()) return;
         try {
+            // @ts-ignore
             const rilRes: FetchResult<RilResult> = await sendRil({ variables: { post_id: post.id } });
             const isRil = rilRes.data!!.sendRil!!;
             user_ril = isRil;
@@ -53,6 +54,7 @@
     async function onFek(){
         if(!checkForAuth()) return;
         try {
+            // @ts-ignore
             const fekRes: FetchResult<FekResult> = await sendFek({ variables: { post_id: post.id } });
             const isFek = fekRes.data!!.sendFek!!;
             user_fek = isFek;

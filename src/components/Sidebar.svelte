@@ -20,7 +20,7 @@
     .selected {
         @apply bg-gray-700
     }
-    #sidebar-action a:hover {
+    #sidebar-action a:hover, button:hover {
         @apply selected
     }
 </style>

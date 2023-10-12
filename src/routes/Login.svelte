@@ -8,6 +8,7 @@
     import { onMount } from "svelte";
 
     onMount(checkSessionRedirect);
+    // @ts-ignore
 	setClient(client);
 
     interface LoginResponse {
@@ -26,6 +27,7 @@
         try {
             const data = new FormData(e.currentTarget);
             const username = data.get("username")
+            // @ts-ignore
             const res: FetchResult<LoginResponse> = await loginUser({ variables: {
                 username: data.get("username"),
                 password: data.get("password")
