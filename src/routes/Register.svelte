@@ -3,10 +3,11 @@
     import { REGISTER } from "@gql/user";
     import client from "@gql/client";
     import type { FetchResult } from "@apollo/client";
-    import { Link, link } from "svelte-routing";
+    import { Link, link, navigate } from "svelte-routing";
     import checkSessionRedirect from "misc/Session";
+    import { onMount } from "svelte";
 
-    checkSessionRedirect();
+    onMount(checkSessionRedirect);
 	setClient(client);
 
     interface RegisterResponse {
@@ -18,7 +19,7 @@
     }
     
     const registerUser = mutation(REGISTER);
-    // let registerSuccess = false;
+    let registerSuccess = false;
     let failedReason: String = "";
 
     async function register(e: SubmitEvent & {
@@ -31,22 +32,27 @@
                 failedReason = "verification password";
                 return
             }
-
+            
+            const username = data.get("username");
             const res: FetchResult<RegisterResponse> = await registerUser({ variables: {
                 username: data.get("username"),
                 password: data.get("password"),
                 verification_password: data.get("verification_password")
             }});
             
-            // registerSuccess = res.data!.registerUser.success;
+            registerSuccess = res.data!.registerUser.success;
             failedReason = res.data!.registerUser.reason;
-            console.log(res.data!.registerUser.reason);
+            if(registerSuccess){
+                localStorage.setItem("auth_key", res.data!.registerUser.auth_key);
+                localStorage.setItem("username", username as string);
+                navigate("/");
+            }
         } catch(err){
             console.log(err);
         }
     }
 </script>
-<style lang="scss">
+<style lang="scss"> 
     @import url('https://fonts.googleapis.com/css2?family=Chango&family=Dancing+Script:wght@600&family=IBM+Plex+Sans:wght@600&family=Poppins:wght@500&family=Quantico&display=swap');
     #logo {
         font-family: 'Quantico';

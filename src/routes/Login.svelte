@@ -7,8 +7,7 @@
     import checkSessionRedirect from "misc/Session";
     import { onMount } from "svelte";
 
-
-    onMount(() => checkSessionRedirect());
+    onMount(checkSessionRedirect);
 	setClient(client);
 
     interface LoginResponse {
@@ -26,6 +25,7 @@
     }){
         try {
             const data = new FormData(e.currentTarget);
+            const username = data.get("username")
             const res: FetchResult<LoginResponse> = await loginUser({ variables: {
                 username: data.get("username"),
                 password: data.get("password")
@@ -33,6 +33,7 @@
             loginSuccess = res.data!.loginUser.success;
             if(loginSuccess){
                 localStorage.setItem("auth_key", res.data!.loginUser.auth_key);
+                localStorage.setItem("username", username as string);
                 navigate("/");
             }
             return loginSuccess;

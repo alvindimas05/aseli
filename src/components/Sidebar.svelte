@@ -1,7 +1,13 @@
 <script lang="ts">
-    import { link } from "svelte-routing";
+    import { link, navigate } from "svelte-routing";
     import { faArrowRightFromBracket, faHome, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
+
+    function logout(){
+        localStorage.removeItem("auth_key");
+        localStorage.removeItem("username");
+        navigate("/login");
+    }
 </script>
 <style lang="scss">
     @import url('https://fonts.googleapis.com/css2?family=Chango&family=Dancing+Script:wght@600&family=IBM+Plex+Sans:wght@600&family=Poppins:wght@500&family=Quantico&display=swap');
@@ -59,6 +65,13 @@
                 <Fa class="text-white text-2xl" icon={faUser}/>
                 <span class="flex-1 ml-3 whitespace-nowrap">Profil</span>
                 </a>
+            </li>
+            <li>
+                <button on:click={logout}  class="flex items-center p-4 rounded-lg text-white text-start w-full">
+                <!-- <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil"> -->
+                <Fa class="text-white text-2xl" icon={faArrowRightFromBracket}/>
+                <span class="flex-1 ml-3 whitespace-nowrap">Log out</span>
+                </button>
             </li>
             {:else}
             <li>

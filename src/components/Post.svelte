@@ -16,17 +16,15 @@
     import Fa from "svelte-fa";
     import { faComment, faEllipsisV, faShare, faThumbsDown, faThumbsUp, faUser } from "@fortawesome/free-solid-svg-icons";
     import { url } from "@gql/client";
-    import { writable } from "svelte/store";
     import type { FetchResult } from "@apollo/client";
     import { mutation } from "svelte-apollo";
     import { FEK, RIL } from "@gql/post";
     export let post: PostData;
 
-
     // Ril only
     const sendRil = mutation(RIL);
-    let ril = writable(post.ril);
-    let user_ril = writable(post.user_ril);
+    let ril = post.ril;
+    let user_ril = post.user_ril;
 
     interface RilResult {
         sendRil: boolean
@@ -36,8 +34,8 @@
         try {
             const rilRes: FetchResult<RilResult> = await sendRil({ variables: { post_id: post.id } });
             const isRil = rilRes.data!!.sendRil!!;
-            user_ril.update(() => isRil);
-            ril.update(val => isRil ? val + 1 : val - 1); 
+            user_ril = isRil;
+            ril = isRil ? ril + 1 : ril - 1; 
         } catch(err){
             console.error(err);
         }
@@ -46,8 +44,8 @@
 
     // Fek only
     const sendFek = mutation(FEK);
-    let fek = writable(post.fek);
-    let user_fek = writable(post.user_fek);
+    let fek = post.fek;
+    let user_fek = post.user_fek;
 
     interface FekResult {
         sendFek: boolean
@@ -57,8 +55,8 @@
         try {
             const fekRes: FetchResult<FekResult> = await sendFek({ variables: { post_id: post.id } });
             const isFek = fekRes.data!!.sendFek!!;
-            user_fek.update(() => isFek);
-            fek.update(val => isFek ? val + 1 : val - 1); 
+            user_fek = isFek;
+            fek = isFek ? fek + 1 : fek - 1; 
         } catch(err){
             console.error(err);
         }
@@ -82,19 +80,18 @@
         <!-- <img src="/icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto"> -->
         <Fa class="text-3xl text-white ms-auto" icon={faEllipsisV}/>
     </div>
-    <img src={`${url}/images/${post.image}`} alt="Post"  class="w-full">
-
+    <img src={`${url}/images/${post.image}`} loading="lazy" alt="Post" class="w-full">
     <div class="post-action flex flex-row gap-[4px] mt-4 px-4">
         <!-- <img src="/icon/nyata.png" class="w-[30px] h-[30px]"> -->
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class={"text-2xl " + ($user_ril ? "text-green-500" : "text-white")}
+        <div class={"text-2xl " + (user_ril ? "text-green-500" : "text-white")}
         on:click={onRil} role="button" tabindex="0"><Fa icon={faThumbsUp}/></div>
-        <span class="text-white text-lg ml-1">{$ril}</span>
+        <span class="text-white text-lg ml-1">{ril}</span>
         <!-- <img src="/icon/nyata.png" class="w-[30px] h-[30px] ms-2 rotate-180"> -->
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class={"text-2xl ms-2 " + ($user_fek ? "text-red-500" : "text-white")}
+        <div class={"text-2xl ms-2 " + (user_fek ? "text-red-500" : "text-white")}
         on:click={onFek} role="button" tabindex="0"><Fa icon={faThumbsDown}/></div>
-        <span class="text-white text-lg ml-1">{$fek}</span>
+        <span class="text-white text-lg ml-1">{fek}</span>
         <!-- <img src="/icon/komen.png" class="w-[30px] h-[30px] ms-2"> -->
         <div><Fa class="text-2xl text-white ms-2" icon={faComment}/></div>
         <span class="text-white text-lg ml-1">{post.comments_total}</span>
