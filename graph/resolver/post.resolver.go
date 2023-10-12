@@ -85,7 +85,7 @@ func (r *mutationResolver) SendComment(ctx context.Context, input model.RequestS
 }
 
 // Posts is the resolver for the posts field.
-func (r *queryResolver) Posts(ctx context.Context) ([]*model.PostResponse, error) {
+func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([]*model.PostResponse, error) {
 	db, err := database.Connect()
 	if err != nil {
 		panic(err)
@@ -112,7 +112,16 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.PostResponse, error
 		cmtCmd = fmt.Sprintf(", (SELECT %s OMIT user, post FROM comment) AS comments", sfields[1])
 	}
 
-	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post", sfields[0], cmtCmd), nil)
+	// Add conditions
+	cndCmd := ""
+	if filter != nil {
+		cndCmd += "WHERE "
+		if filter.Username != nil {
+			cndCmd += fmt.Sprintf("user.username='%s'", helper.SafelyConvertString(*filter.Username))
+		}
+	}
+	
+	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s", sfields[0], cmtCmd, cndCmd), nil)
 	if err != nil {
 		panic(err)
 	}

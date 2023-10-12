@@ -55,8 +55,12 @@ type responseCreatePost {
     post_id: String!
 }
 
+input PostsFilter {
+    username: String
+}
+
 extend type Query {
-    posts: [PostResponse!]!
+    posts(filter: PostsFilter): [PostResponse!]!
 }
 
 extend type Mutation {
