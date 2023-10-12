@@ -142,24 +142,28 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.UserResponse, error
 	return users, nil
 }
 
-// GetUser is the resolver for the getUser field.
-func (r *queryResolver) GetUser(ctx context.Context, id *string) (*model.UserResponse, error) {
+// User is the resolver for the user field.
+func (r *queryResolver) User(ctx context.Context, username *string) (*model.UserResponse, error) {
 	db, err := database.Connect()
 	if err != nil {
 		panic(err)
 	}
 
-	queryId := ""
-	if id == nil {
-		queryId = ctx.Value("user").(string)
-	} else {
-		queryId = *id
-	}
-
 	fields := helper.NormalizeFields(ctx)
-	data, err := db.Query(fmt.Sprintf("SELECT %s FROM $id", fields), map[string]interface{}{"id": queryId})
-	if err != nil {
-		panic(err)
+	var data interface{}
+
+	if username == nil {
+		dat, err := db.Query(fmt.Sprintf("SELECT %s FROM $id", fields), map[string]interface{}{"id": ctx.Value("user").(string)})
+		if err != nil {
+			panic(err)
+		}
+		data = dat
+	} else {
+		dat, err := db.Query(fmt.Sprintf("SELECT %s FROM user WHERE username=$username", fields), map[string]interface{}{"username": &username})
+		if err != nil {
+			panic(err)
+		}
+		data = dat
 	}
 
 	ndata := helper.NormalizeQueryResult(data)
@@ -168,7 +172,12 @@ func (r *queryResolver) GetUser(ctx context.Context, id *string) (*model.UserRes
 	surrealdb.Unmarshal(ndata, &users)
 
 	defer db.Close()
-	return users[0], nil
+
+	user := &model.UserResponse{}
+	if len(users) > 0 {
+		user = users[0]
+	}
+	return user, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
