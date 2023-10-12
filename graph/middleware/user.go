@@ -4,18 +4,12 @@ import (
 	"aseli-api/graph/database"
 	"aseli-api/graph/helper"
 	"aseli-api/graph/model"
-	"bytes"
 	"context"
-	"encoding/json"
-	"io"
 	"net/http"
 	"reflect"
-	"strings"
 
 	"github.com/surrealdb/surrealdb.go"
 )
-
-var allowed = []string{"IntrospectionQuery", "registerUser", "loginUser"}
 
 type RequestBody struct {
 	// Query         string `json:"query"`
@@ -25,27 +19,9 @@ type RequestBody struct {
 
 func UserMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		data, _ := io.ReadAll(r.Body)
-		r.Body = io.NopCloser(bytes.NewReader(data))
-
-		body := RequestBody{}
-		json.Unmarshal(data, &body)
-
-		// Check if has file
-		if (!strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") &&
-			// Check if allowed query or mutation
-			contains(body.Query, allowed)) ||
-			// Check if getting images
-			strings.Contains(r.URL.Path, "/images") ||
-			// Check if method is OPTIONS
-			r.Method == "OPTIONS" {
-
-			next.ServeHTTP(w, r)
-			return
-		}
 
 		key := r.Header.Get("Auth-Key")
-		if key == "" {
+		if key == "" && r.Context().Value("force_allow") == nil {
 			http.Error(w, "Invalid Auth-Key", http.StatusForbidden)
 			return
 		}
@@ -70,17 +46,10 @@ func UserMiddleware(next http.Handler) http.Handler {
 
 			rAuth := r.WithContext(context.WithValue(r.Context(), "user", authData.User))
 			next.ServeHTTP(w, rAuth)
-		} else {
+		} else if r.Context().Value("force_allow") == nil {
 			http.Error(w, "Invalid Auth-Key", http.StatusForbidden)
+		} else {
+			next.ServeHTTP(w, r)
 		}
 	})
-}
-
-func contains(s string, c []string) bool {
-	for _, co := range c {
-		if strings.Contains(s, co) {
-			return true
-		}
-	}
-	return false
 }
