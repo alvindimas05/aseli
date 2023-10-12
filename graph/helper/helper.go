@@ -158,3 +158,8 @@ func SaveImage(image graphql.Upload) string {
 	}
 	return filename
 }
+
+func DeleteImage(filename string) {
+	imgPath := path.Join(MkdirImages(), filename)
+	os.Remove(imgPath)
+}
