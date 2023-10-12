@@ -1,5 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client/core";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+import { createUploadLink } from "apollo-upload-client";
 
 const url = "http://localhost:8080";
 const httpLink = new HttpLink({
@@ -7,15 +7,24 @@ const httpLink = new HttpLink({
     headers: {
         "Auth-Key": localStorage.getItem("auth_key") || ""
     }
-})
+});
+
+const uploadLink = createUploadLink({
+    uri: url + "/query",
+    headers: {
+        "Auth-Key": localStorage.getItem("auth_key") || ""
+    }
+});
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: httpLink
 });
 
-loadDevMessages();  
-loadErrorMessages();
+const clientUpload = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: uploadLink
+});
 
-export { url };
+export { url, clientUpload };
 export default client;

@@ -13,3 +13,16 @@ mutation RegisterUser($username: String!, $password: String!, $verification_pass
 		success reason auth_key
 	}
 }`;
+
+export const USER = gql`
+	query User {
+		user {
+			profile_image
+		}
+	}
+`;
+
+export const CHANGE_PROFILE_IMAGE = gql`
+mutation ($image: Upload!){ 
+	changeProfileImage(image: $image)
+}`;

@@ -16,3 +16,10 @@ export const FEK = gql`
 mutation SendFek($post_id: String!){
     sendFek(post_id: $post_id)
 }`;
+
+export const USER_POSTS = gql`
+query Posts($username: String!) {
+    posts(filter: { username: $username }) {
+        image
+    }
+}`;

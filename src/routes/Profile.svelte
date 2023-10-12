@@ -1,5 +1,51 @@
 <script lang="ts">
+    import client, { clientUpload, url } from "@gql/client";
+    import { USER_POSTS } from "@gql/post";
+    import { CHANGE_PROFILE_IMAGE, USER } from "@gql/user";
     import Sidebar from "components/Sidebar.svelte";
+    import { query, setClient, type ReadableQuery, mutation } from "svelte-apollo";
+
+    setClient(client);
+
+    interface User {
+        user: {
+            profile_image: string
+        }
+    }
+
+    interface Posts {
+        posts: {
+            image: string
+        }[]
+    }
+    const username = localStorage.getItem("username")
+    const user: ReadableQuery<User> = query(USER);
+    const posts: ReadableQuery<Posts> = query(USER_POSTS, { variables: { username } });
+    let profile: string | null = null;
+
+    $: $user.data, (() => profile = $user.data?.user.profile_image ? `${url}/images/${$user.data?.user.profile_image}` :     "https://picsum.photos/200")();
+
+    const toBase64 = (file: File) => new Promise<string | ArrayBuffer | null>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
+
+    const mutateProfile = mutation(CHANGE_PROFILE_IMAGE);
+    let inputFile: HTMLInputElement
+    async function changeProfileImage(){
+        if(inputFile.files?.length === 0) return;
+
+        const file = inputFile.files!![0]
+        profile = (await toBase64(file)) as string;
+
+        setClient(clientUpload);
+        await mutateProfile({
+            variables: { image: file }
+        });
+        setClient(client);
+    }
 </script>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Chango&family=Dancing+Script:wght@600&family=IBM+Plex+Sans:wght@600&family=Poppins:wght@500&family=Quantico&display=swap');
@@ -12,7 +58,6 @@
         scrollbar-width: none;
     }
 </style>
-
 <div class="w-full flex">
     <Sidebar/>
     <div class="profil container h-[100vh] mx-auto overflow-y-scroll pb-10 w-[900px]">
@@ -21,7 +66,7 @@
             <img src="icon/profil.png" class="border border-white rounded-full w-[200px] h-[200px] m-auto" alt="profil">
             <div class="profil-detail text-white">
                 <h1 class="text-3xl mb-5">abyankuhh</h1>
-                <div class="grid grid-cols-3 text-xl mb-5">
+                    <div class="grid grid-cols-3 text-xl mb-5">
                     <div>
                         <span class="font-bold">123</span>
                         <span>Postingan</span>
@@ -55,15 +100,11 @@
             </div>
         </div> -->
         <div class="container mx-auto mt-10 grid grid-cols-3 gap-2 place-items-center w-[700px]">
-            <img src="https://placehold.co/400" alt="konten" class="konten1">
-            <img src="https://placehold.co/400" alt="konten" class="konten2">
-            <img src="https://placehold.co/400" alt="konten" class="konten3">
-            <img src="https://placehold.co/400" alt="konten" class="konten4">
-            <img src="https://placehold.co/400" alt="konten" class="konten5">
-            <img src="https://placehold.co/400" alt="konten" class="konten6">
-            <img src="https://placehold.co/400" alt="konten" class="konten7">
-            <img src="https://placehold.co/400" alt="konten" class="konten8">
-            <img src="https://placehold.co/400" alt="konten" class="konten9">
+            {#if $posts.data}
+                {#each $posts.data.posts as post}
+                    <img class="aspect-square object-cover h-full" src={`${url}/images/${post.image}`} alt="konten">
+                {/each}
+            {/if}
         </div>
     </div>
 
@@ -71,19 +112,25 @@
         <div class="h-full pl-4 pr-3 pt-10 overflow-y-auto  border-l border-[#656565]">
 
             <div class="grid grid-cols-1 place-items-center mx-3">
-                <img src="https://picsum.photos/200" class="w-[150px] h-[150px] rounded-full border border-white">
-                <div class="text-white text-3xl mt-4">abyankuhhh</div>
+                {#if profile != null}
+                    <input bind:this={inputFile} on:change={changeProfileImage} type="file" class="hidden">
+                    <!-- svelte-ignore a11y-missing-attribute -->
+                    <!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <img role="button" on:click={() => inputFile.click()} src={profile}  class="w-[150px] h-[150px] rounded-full border border-white">
+                {/if}
+                <div class="text-white text-3xl mt-4">{localStorage.getItem("username")}</div>
                 <div class="flex w-full justify-between items-center text-white text-center mt-8 text-xl">
                     <div class="grid grid-cols-1">
-                        <span class="font-bold">100</span>
+                        <span class="font-bold">0</span>
                         <span class="text-lg">Pengikut</span>
                     </div>
                     <div class="grid grid-cols-1">
-                        <span class="font-bold">100</span>
+                        <span class="font-bold">0</span>
                         <span class="text-lg">Diikuti</span>
                     </div>
                     <div class="grid grid-cols-1">
-                        <span class="font-bold">100</span>
+                        <span class="font-bold">{$posts.data?.posts.length ?? 0}</span>
                         <span class="text-lg">Postingan</span>
                     </div>
                 </div>
