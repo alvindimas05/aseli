@@ -11,12 +11,12 @@ import org.aldev.GetPostsQuery
 import org.aldev.aseli.R
 import org.aldev.aseli.databinding.ItemPostBinding
 import org.aldev.aseli.misc.Client
-import org.aldev.aseli.viewmodels.HomeViewModel
+import org.aldev.aseli.viewmodels.PostsFragmentViewModel
 
 class PostsAdapter  (
     private val layoutInflater: LayoutInflater,
     private var posts: List<GetPostsQuery.Post>,
-    private val viewModel: HomeViewModel
+    private val viewModel: PostsFragmentViewModel
 ) : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PostHolder(ItemPostBinding.inflate(
         layoutInflater, parent, false

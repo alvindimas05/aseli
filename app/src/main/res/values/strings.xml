@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">aseli</string>
-<!--    <string name="api_url">http://192.168.1.7:8080</string>-->
     <string name="failed_empty_username">Empty username!</string>
     <string name="failed_empty_password">Empty password!</string>
     <string name="failed_empty_verification">Empty verification password!</string>
     <string name="failed_verification_not_match">Verification not match!</string>
     <string name="failed_username_used">Username already used!</string>
     <string name="login_failed">Wrong username or password!</string>
+    <string name="post_preview_image_required">Image required!</string>
+    <string name="post_preview_title_required">Title required!</string>
+    <string name="post_preview_description_required">Description required!</string>
 </resources>

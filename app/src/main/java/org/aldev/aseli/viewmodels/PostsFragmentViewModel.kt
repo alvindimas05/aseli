@@ -11,7 +11,7 @@ import org.aldev.SendFekMutation
 import org.aldev.SendRilMutation
 import org.aldev.aseli.misc.Client
 
-class HomeViewModel : ViewModel() {
+class PostsFragmentViewModel : ViewModel() {
     private lateinit var client: ApolloClient
     val posts = MutableLiveData<List<GetPostsQuery.Post>?>()
     fun setClient(authKey: String){

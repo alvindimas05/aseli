@@ -11,3 +11,13 @@ mutation SendRil($post_id: String!) {
 mutation SendFek($post_id: String!) {
     sendFek(post_id: $post_id)
 }
+
+mutation CreatePost($image: Upload!, $title: String!, $description: String!) {
+    createPost(
+        image: $image,
+        title: $title,
+        description: $description
+    ) {
+        post_id
+    }
+}
