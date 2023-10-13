@@ -15,6 +15,7 @@ import (
 	// "github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
+	chiMiddleware "github.com/go-chi/chi/middleware"
 )
 
 type User struct {
@@ -36,6 +37,8 @@ func SetServer() {
 	host, port := os.Getenv("SERVER_HOST"), os.Getenv("SERVER_PORT")
 	router := chi.NewRouter()
 
+	router.Use(chiMiddleware.Timeout(120))
+	router.Use(middleware.QueryMiddleware)
 	router.Use(middleware.CorsMiddleware)
 	router.Use(middleware.UserMiddleware)
 

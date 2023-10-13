@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -32,7 +33,7 @@ func QueryMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, rForce)
 			return
 		}
-		
+		next.ServeHTTP(w, r)
 	})
 }
 
