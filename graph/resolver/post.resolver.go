@@ -122,7 +122,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 			cndCmd += fmt.Sprintf("user.username='%s'", helper.SafelyConvertString(*filter.Username))
 		}
 	}
-	
+
 	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s", sfields[0], cmtCmd, cndCmd), nil)
 	if err != nil {
 		panic(err)
