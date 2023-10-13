@@ -114,7 +114,7 @@ func (r *mutationResolver) ChangeProfileImage(ctx context.Context, image graphql
 	}
 
 	user := ctx.Value("user").(string)
-	query, err := db.Query("SELECT profile_image FROM $user", map[string]interface{}{"user": user})
+	query, err := db.Query("SELECT profile_image FROM $user", map[string]interface{}{ "user": user })
 	if err != nil {
 		panic(err)
 	}
@@ -127,7 +127,7 @@ func (r *mutationResolver) ChangeProfileImage(ctx context.Context, image graphql
 
 	imgName := helper.SaveImage(image)
 	db.Query("UPDATE $user SET profile_image=$profile_image", map[string]interface{}{
-		"user":          user,
+		"user": user,
 		"profile_image": &imgName,
 	})
 
