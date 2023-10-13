@@ -30,6 +30,7 @@ type CommentResponse {
 type PostResponse {
     id: String!
     username: String!
+    user_profile_image: String!
     title: String!
     description: String!
     image: String!

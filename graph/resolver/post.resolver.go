@@ -102,6 +102,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 	}
 
 	fields = helper.ReplaceArrayValue(fields, "comments_total", "array::len(comments) AS comments_total")
+	fields = helper.ReplaceArrayValue(fields, "user_profile_image", "user.profile_image AS user_profile_image")
 
 	cfields := strings.Join(fields, ",")
 
@@ -122,7 +123,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 			cndCmd += fmt.Sprintf("user.username='%s'", helper.SafelyConvertString(*filter.Username))
 		}
 	}
-	
+
 	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s", sfields[0], cmtCmd, cndCmd), nil)
 	if err != nil {
 		panic(err)
