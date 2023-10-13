@@ -9,3 +9,9 @@ mutation RegisterUser($username: String!, $password: String!, $verification: Str
         success auth_key reason
     }
 }
+
+query User($username: String) {
+    user(username: $username) {
+        profile_image
+    }
+}

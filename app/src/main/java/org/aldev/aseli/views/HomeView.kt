@@ -1,7 +1,6 @@
 package org.aldev.aseli.views
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -29,14 +28,8 @@ class HomeView : AppCompatActivity() {
     }
     private fun setBottomBarButtons(){
 //        bottomBarBinding = BottomBarBinding.inflate(layoutInflater)
-        binding.bottomBar.bottomBarHome.setOnClickListener {
-            binding.homePager.currentItem = 0
-            Log.d("ASELI", "NYATA")
-        }
-        binding.bottomBar.bottomBarPlus.setOnClickListener {
-            binding.homePager.currentItem = 1
-            Log.d("ASELI", "NYATA")
-        }
+        binding.bottomBar.bottomBarHome.setOnClickListener { binding.homePager.currentItem = 0 }
+        binding.bottomBar.bottomBarPlus.setOnClickListener { binding.homePager.currentItem = 1 }
 //        bottomBarBinding.bottomBarUser.setOnClickListener { binding.homePager.currentItem = 2 }
     }
     class HomePagerAdapter(manager: FragmentManager, lifecycle: Lifecycle, pager: ViewPager2) : FragmentStateAdapter(manager, lifecycle){

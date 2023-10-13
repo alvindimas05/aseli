@@ -33,6 +33,8 @@ type Mutation {
 
   loginUser(input: loginRequest!): loginResponse!
 
+  changeProfileImage(image: Upload!): String!
+
   createPost(title: String!, description: String!, image: Upload!): responseCreatePost!
 
   sendRil(post_id: String!): Boolean
@@ -86,12 +88,16 @@ type PostResponse {
   comments_total: Int!
 }
 
+input PostsFilter {
+  username: String
+}
+
 type Query {
   users: [UserResponse!]!
 
-  getUser(id: String!): UserResponse!
+  user(username: String): UserResponse!
 
-  posts: [PostResponse!]!
+  posts(filter: PostsFilter): [PostResponse!]!
 }
 
 scalar Upload
@@ -102,12 +108,16 @@ type User {
   username: String!
 
   password: String!
+
+  profile_image: String
 }
 
 type UserResponse {
   id: String!
 
   username: String!
+
+  profile_image: String
 }
 
 # See https://github.com/JetBrains/js-graphql-intellij-plugin/issues/665
