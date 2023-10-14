@@ -20,6 +20,7 @@ import (
 
 // CreatePost is the resolver for the createPost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, title string, description string, image graphql.Upload) (*model.ResponseCreatePost, error) {
+	fmt.Println(image.ContentType)
 	if !slices.Contains([]string{"image/png", "image/jpeg"}, image.ContentType) {
 		return nil, fmt.Errorf("file is not an image")
 	}
@@ -117,8 +118,8 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 	// Add conditions
 	cndCmd := ""
 	if filter != nil {
-		cndCmd += "WHERE "
 		if filter.Username != nil {
+			cndCmd += "WHERE "
 			cndCmd += fmt.Sprintf("user.username='%s'", helper.SafelyConvertString(*filter.Username))
 		}
 	}
