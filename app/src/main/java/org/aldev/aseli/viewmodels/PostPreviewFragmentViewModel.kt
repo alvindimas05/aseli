@@ -16,11 +16,12 @@ class PostPreviewFragmentViewModel : ViewModel() {
     fun setClient(authKey: String){
         client = Client.setClient(authKey)
     }
-    fun postImage(image: File, title: String, description: String){
-        viewModelScope.launch { postImageCoroutine(image, title, description) }
+    fun postImage(image: File, title: String, description: String, mimeType: String){
+        viewModelScope.launch { postImageCoroutine(image, title, description, mimeType) }
     }
-    private suspend fun postImageCoroutine(image: File, title: String, description: String){
-        client.mutation(CreatePostMutation(image.toUpload("application/json"), title, description)).execute()
+    private suspend fun postImageCoroutine(image: File, title: String, description: String, mimeType: String){
+        client.mutation(CreatePostMutation(image.toUpload(mimeType), title, description)).execute()
+        image.deleteOnExit()
         result.value = true
     }
 }
