@@ -13,11 +13,11 @@ class PostAdapterViewModel : ViewModel() {
     fun setClient(authKey: String){
         client = Client.setClient(authKey)
     }
-    fun setProfileImage(username: String, callback: (profileImage: String) -> Unit){
+    fun setProfileImage(username: String, callback: (profileImage: String?) -> Unit){
         viewModelScope.launch { setProfileImageCoroutine(username, callback) }
     }
-    private suspend fun setProfileImageCoroutine(username: String, callback: (profileImage: String) -> Unit){
+    private suspend fun setProfileImageCoroutine(username: String, callback: (profileImage: String?) -> Unit){
         val user = client.query(UserQuery(Optional.present(username))).execute()
-        callback(user.data!!.user.profile_image!!)
+        callback(user.data!!.user.profile_image)
     }
 }
