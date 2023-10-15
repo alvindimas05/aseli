@@ -15,3 +15,7 @@ query User($username: String) {
         profile_image
     }
 }
+
+mutation ChangeProfileImage($image: Upload!) {
+    changeProfileImage(image: $image)
+}

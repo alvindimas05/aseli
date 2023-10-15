@@ -1,7 +1,6 @@
 package org.aldev.aseli.adapter
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -13,6 +12,7 @@ import org.aldev.GetPostsQuery
 import org.aldev.aseli.R
 import org.aldev.aseli.databinding.ItemPostBinding
 import org.aldev.aseli.misc.Client
+import org.aldev.aseli.session.SessionHandler
 import org.aldev.aseli.viewmodels.PostAdapterViewModel
 import org.aldev.aseli.viewmodels.PostsFragmentViewModel
 import org.aldev.aseli.views.HomeView
@@ -53,10 +53,7 @@ class PostsAdapter  (
         setProfileImage(holder, post.username)
     }
     private fun setProfileImage(holder: PostHolder, username: String){
-        val pref = avt.getSharedPreferences("user_data", MODE_PRIVATE)
-        val authKey = pref.getString("auth_key", "")!!
-
-        postViewModel.setClient(authKey)
+        postViewModel.setClient(SessionHandler(avt).getSessionKey())
         postViewModel.setProfileImage(username) {
             Glide.with(avt).load(if(it == null) Client.randomImageUrl else "${Client.imagesUrl}/${it}").into(holder.binding.itemPostProfil)
         }
