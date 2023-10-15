@@ -52,7 +52,7 @@ class LoginView : AppCompatActivity() {
         }
     }
     private fun handleSuccess(){
-        sessionHandler.setUserSession(viewModel.authKey)
+        sessionHandler.setUserSession(viewModel.authKey, viewModel.username)
         moveToHome()
     }
     private fun moveToRegister(){

@@ -7,6 +7,7 @@ class Client {
         private const val baseUrl = "http://192.168.1.8:8080"
         private const val url = "$baseUrl/query"
         const val imagesUrl = "$baseUrl/images"
+        const val randomImageUrl = "https://picsum.photos/200"
         fun setClient(authKey: String? = null): ApolloClient {
             var client = ApolloClient.Builder().serverUrl(url)
             if(authKey != null) {

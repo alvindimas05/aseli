@@ -11,9 +11,13 @@ class SessionHandler (avt: Activity) {
     fun getSessionKey(): String {
         return pref.getString("auth_key", "")!!
     }
-    fun setUserSession(authKey: String){
+    fun getUsername(): String {
+        return pref.getString("username", "")!!
+    }
+    fun setUserSession(authKey: String, username: String){
         val edit = pref.edit()
         edit.putString("auth_key", authKey)
+        edit.putString("username", username)
         edit.apply()
     }
 }

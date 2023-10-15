@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import org.aldev.aseli.databinding.ActivityHomeBinding
 import org.aldev.aseli.fragments.PostPreviewFragment
 import org.aldev.aseli.fragments.PostsFragment
+import org.aldev.aseli.fragments.UserFragment
 
 class HomeView : AppCompatActivity() {
     private lateinit var binding : ActivityHomeBinding
@@ -30,16 +31,18 @@ class HomeView : AppCompatActivity() {
 //        bottomBarBinding = BottomBarBinding.inflate(layoutInflater)
         binding.bottomBar.bottomBarHome.setOnClickListener { binding.homePager.currentItem = 0 }
         binding.bottomBar.bottomBarPlus.setOnClickListener { binding.homePager.currentItem = 1 }
-//        bottomBarBinding.bottomBarUser.setOnClickListener { binding.homePager.currentItem = 2 }
+        binding.bottomBar.bottomBarUser.setOnClickListener { binding.homePager.currentItem = 2 }
     }
     class HomePagerAdapter(manager: FragmentManager, lifecycle: Lifecycle, pager: ViewPager2) : FragmentStateAdapter(manager, lifecycle){
         private val fragments = ArrayList<Fragment>()
         init {
             val postsFragment = PostsFragment()
             val postPreviewFragment = PostPreviewFragment()
+            val userFragment = UserFragment()
 
             fragments.add(postsFragment)
             fragments.add(postPreviewFragment)
+            fragments.add(userFragment)
 
             postPreviewFragment.refreshPosts = {
                 postsFragment.refreshPost()

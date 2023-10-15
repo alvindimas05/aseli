@@ -58,7 +58,7 @@ class PostsAdapter  (
 
         postViewModel.setClient(authKey)
         postViewModel.setProfileImage(username) {
-            Glide.with(avt).load(if(it == null) "https://picsum.photos/200" else "${Client.imagesUrl}/${it}").into(holder.binding.itemPostProfil)
+            Glide.with(avt).load(if(it == null) Client.randomImageUrl else "${Client.imagesUrl}/${it}").into(holder.binding.itemPostProfil)
         }
     }
     private fun setButtonRil(ctx: Context, btn: ImageButton, ril: Boolean) {
