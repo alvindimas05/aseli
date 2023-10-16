@@ -64,7 +64,7 @@ class UserFragment : Fragment() {
 
         viewModel.posts.observe(avt){
             if(it == null) return@observe
-            postsAdapter = PostsAdapter(this@UserFragment.layoutInflater, it, viewModel)
+            postsAdapter = PostsAdapter(avt, it, viewModel)
             binding.userPostsAdapter.apply {
                 adapter = postsAdapter
                 layoutManager = LinearLayoutManager(avt)

@@ -38,8 +38,8 @@ class PostsFragment : Fragment() {
     }
     private fun setBindable(){
         viewModel.posts.observe(avt){
-            val postsAdapter = PostsAdapter(this@PostsFragment.layoutInflater, it!!, viewModel)
-            binding.root.apply {
+            val postsAdapter = PostsAdapter(avt, it!!, viewModel)
+            binding.postsList.apply {
                 adapter = postsAdapter
                 layoutManager = LinearLayoutManager(avt)
             }

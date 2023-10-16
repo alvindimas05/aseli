@@ -1,11 +1,13 @@
 package org.aldev.aseli.adapter
 
 import android.content.Context
-import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.aldev.GetPostsQuery
@@ -17,19 +19,17 @@ import org.aldev.aseli.viewmodels.PostAdapterViewModel
 import org.aldev.aseli.viewmodels.PostsFragmentViewModel
 import org.aldev.aseli.views.HomeView
 
-class PostsAdapter  (
-    private val layoutInflater: LayoutInflater,
+class PostsAdapter(
+    private val avt: HomeView,
     private var posts: List<GetPostsQuery.Post>,
     private val viewModel: PostsFragmentViewModel
 ) : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
-    private lateinit var avt: HomeView
     private lateinit var postViewModel: PostAdapterViewModel
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PostHolder(ItemPostBinding.inflate(
-        layoutInflater, parent, false
+        avt.layoutInflater, parent, false
     ))
     override fun getItemCount() = posts.size
     override fun onBindViewHolder(holder: PostHolder, i: Int) {
-        avt = layoutInflater.context as HomeView
         postViewModel = ViewModelProvider(avt)[PostAdapterViewModel::class.java]
 
         val post = posts[i]
@@ -51,6 +51,17 @@ class PostsAdapter  (
 
         Glide.with(avt).load("${Client.imagesUrl}/${post.image}").into(holder.binding.itemPostImage)
         setProfileImage(holder, post.username)
+
+        val commentsAdapter = CommentsAdapter(avt, post.comments)
+        binding.itemCommentsList.commentsList.apply {
+            adapter = commentsAdapter
+            layoutManager = LinearLayoutManager(avt)
+        }
+        setCommentsButton(binding.itemCommentsList.root, binding.itemPostCommentBtn/*, binding.itemCommentsList.btnExit*/)
+    }
+    private fun setCommentsButton(commentsList: LinearLayout, btnComment: ImageButton/*, btnExit: ImageButton*/){
+        btnComment.setOnClickListener { commentsList.visibility = if(commentsList.visibility == View.GONE) View.VISIBLE else View.GONE }
+//        btnExit.setOnClickListener { commentsList.visibility = View.GONE }
     }
     private fun setProfileImage(holder: PostHolder, username: String){
         postViewModel.setClient(SessionHandler(avt).getSessionKey())

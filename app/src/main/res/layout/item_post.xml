@@ -122,4 +122,7 @@
             android:layout_marginTop="10dp"
             android:textSize="11sp"/>
     </LinearLayout>
+    <include android:id="@+id/item_comments_list"
+        layout="@layout/comments_list"
+        android:visibility="gone"/>
 </LinearLayout>
