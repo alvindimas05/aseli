@@ -112,7 +112,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 	cmtCmd := ""
 	if len(sfields) > 1 {
 		sfields[1] = strings.Replace(sfields[1], "username", "user.username AS username", 1)
-		cmtCmd = fmt.Sprintf(", (SELECT %s OMIT user, post FROM comment) AS comments", sfields[1])
+		cmtCmd = fmt.Sprintf(", (SELECT %s OMIT user, post FROM comment WHERE post=$parent.id) AS comments", sfields[1])
 	}
 
 	// Add conditions
@@ -124,6 +124,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 		}
 	}
 
+	// fmt.Printf("SELECT %s%s OMIT user FROM post %s\n", sfields[0], cmtCmd, cndCmd)
 	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s", sfields[0], cmtCmd, cndCmd), nil)
 	if err != nil {
 		panic(err)
