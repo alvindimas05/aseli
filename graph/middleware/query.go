@@ -24,9 +24,7 @@ func QueryMiddleware(next http.Handler) http.Handler {
 			// Check if allowed query or mutation
 			contains(body.Query, allowed)) ||
 			// Check if getting images
-			strings.Contains(r.URL.Path, "/images") ||
-			// Check if method is OPTIONS
-			r.Method == "OPTIONS" {
+			strings.Contains(r.URL.Path, "/images") {
 
 			rForce := r.WithContext(context.WithValue(r.Context(), "force_allow", true))
 			next.ServeHTTP(w, rForce)

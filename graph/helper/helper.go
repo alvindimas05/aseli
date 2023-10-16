@@ -100,11 +100,12 @@ func NormalizeFields(ctx context.Context) string {
 }
 
 func SafelyConvertString(input string) string {
-    pattern := "[`'\"`]"
+    pattern := "[']"
     re := regexp.MustCompile(pattern)
-    cleaned := re.ReplaceAllString(input, "")
+    cleaned := re.ReplaceAllString(input, "\\$0")
     return cleaned
 }
+
 
 func GetCurrentDateTime() string {
 	currentTime := time.Now().UTC()
