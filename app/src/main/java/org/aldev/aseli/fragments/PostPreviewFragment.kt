@@ -9,6 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import org.aldev.aseli.R
 import org.aldev.aseli.databinding.FragmentPostPreviewBinding
 import org.aldev.aseli.misc.ImageUpload
@@ -47,7 +49,11 @@ class PostPreviewFragment : Fragment() {
         refreshPosts!!()
     }
     private fun onUploadPost(){
-        if(!validateInputs()) return
+        val validated = validateInputs()
+        YoYo.with(if(validated) Techniques.SlideOutRight else Techniques.Swing).duration(700).playOn(binding.btnSend)
+
+        if(!validated) return
+
         disableAllInputs()
         viewModel.postImage(image!!, binding.postPreviewTitle.text.toString(), binding.postPreviewDescription.text.toString(), ImageUpload.getMimeType(avt, image!!.toUri())!!)
     }

@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import org.aldev.aseli.databinding.ActivityHomeBinding
 import org.aldev.aseli.fragments.PostPreviewFragment
 import org.aldev.aseli.fragments.PostsFragment
@@ -22,6 +24,8 @@ class HomeView : AppCompatActivity() {
 
         setPagerAdapter()
         setBottomBarButtons()
+
+        YoYo.with(Techniques.SlideInUp).duration(500).playOn(binding.bottomBar.root)
     }
     private fun setPagerAdapter(){
         val pagerAdapter = HomePagerAdapter(supportFragmentManager, lifecycle, binding.homePager)

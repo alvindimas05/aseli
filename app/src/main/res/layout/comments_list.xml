@@ -6,6 +6,14 @@
     android:layout_marginTop="10dp"
     android:orientation="vertical"
     android:background="@drawable/bg_item_comment">
+<!--    <ImageButton-->
+<!--        android:id="@+id/btn_exit"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_gravity="end"-->
+<!--        android:background="@drawable/icon_exit"/>-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comments_list"
         android:layout_marginTop="20dp"

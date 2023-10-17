@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import org.aldev.GetPostsQuery
 import org.aldev.aseli.R
 import org.aldev.aseli.databinding.ItemPostBinding
@@ -57,11 +59,26 @@ class PostsAdapter(
             adapter = commentsAdapter
             layoutManager = LinearLayoutManager(avt)
         }
-        setCommentsButton(binding.itemCommentsList.root, binding.itemPostCommentBtn/*, binding.itemCommentsList.btnExit*/)
+        setCommentsButton(/*binding.itemPost, */binding.itemCommentsList.root, binding.itemPostCommentBtn/*, binding.itemCommentsList.btnExit*/)
+
+        YoYo.with(Techniques.FadeInDown).duration(800).playOn(binding.root)
     }
-    private fun setCommentsButton(commentsList: LinearLayout, btnComment: ImageButton/*, btnExit: ImageButton*/){
-        btnComment.setOnClickListener { commentsList.visibility = if(commentsList.visibility == View.GONE) View.VISIBLE else View.GONE }
-//        btnExit.setOnClickListener { commentsList.visibility = View.GONE }
+    private fun setCommentsButton(/*post: LinearLayout, */commentsList: LinearLayout, btnComment: ImageButton/*, btnExit: ImageButton*/){
+        btnComment.setOnClickListener {
+//            post.visibility = View.GONE
+            val isVisible = commentsList.visibility == View.GONE
+            if(isVisible) commentsList.visibility = View.VISIBLE
+
+            var yoyo = YoYo.with(if(isVisible) Techniques.FadeIn else Techniques.FadeOut).duration(500)
+            if(!isVisible) yoyo = yoyo.onEnd { commentsList.visibility = View.GONE }
+            yoyo.playOn(commentsList)
+
+            YoYo.with(Techniques.Bounce).duration(700).playOn(btnComment)
+        }
+//        btnExit.setOnClickListener {
+//            post.visibility = View.VISIBLE
+//            commentsList.visibility = View.GONE
+//        }
     }
     private fun setProfileImage(holder: PostHolder, username: String){
         postViewModel.setClient(SessionHandler(avt).getSessionKey())
@@ -72,10 +89,14 @@ class PostsAdapter(
     private fun setButtonRil(ctx: Context, btn: ImageButton, ril: Boolean) {
         val img = DrawableCompat.wrap(btn.drawable)
         img.setTint(ctx.getColor(if(ril) R.color.green else R.color.white))
+
+        YoYo.with(if(ril) Techniques.Tada else Techniques.Swing).duration(700).playOn(btn)
     }
-    private fun setButtonFek(ctx: Context, btn: ImageButton, ril: Boolean) {
+    private fun setButtonFek(ctx: Context, btn: ImageButton, fek: Boolean) {
         val img = DrawableCompat.wrap(btn.drawable)
-        img.setTint(ctx.getColor(if(ril) R.color.red else R.color.white))
+        img.setTint(ctx.getColor(if(fek) R.color.red else R.color.white))
+
+        YoYo.with(if(fek) Techniques.Swing else Techniques.Tada).duration(700).playOn(btn)
     }
     private fun updateRil(binding: ItemPostBinding, ril: Boolean){
         val rilVal = binding.itemPostRil.text.toString().toInt() + if(ril) 1 else -1
