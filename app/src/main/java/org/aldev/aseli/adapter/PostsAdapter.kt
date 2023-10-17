@@ -44,6 +44,7 @@ class PostsAdapter(
         binding.itemPostRil.text = post.ril.toString()
         binding.itemPostFek.text = post.fek.toString()
         binding.itemPostCommentTotal.text = post.comments_total.toString()
+        binding.itemPostTime.text = post.time
 
         setButtonRil(binding.root.context, binding.itemPostRilBtn, post.user_ril)
         setButtonFek(binding.root.context, binding.itemPostFekBtn, post.user_fek)

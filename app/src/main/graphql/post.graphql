@@ -1,6 +1,6 @@
 query GetPosts($username: String) {
     posts(filter: { username: $username }) {
-        id username image title description ril fek user_ril user_fek comments_total comments {
+        id username image title description ril fek user_ril user_fek comments_total time comments {
             username time comment
         }
     }

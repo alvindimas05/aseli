@@ -75,6 +75,8 @@ type PostResponse {
 
   image: String!
 
+  time: String!
+
   ril: Int!
 
   fek: Int!
