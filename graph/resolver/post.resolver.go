@@ -104,6 +104,13 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 
 	fields = helper.ReplaceArrayValue(fields, "comments_total", "array::len(comments) AS comments_total")
 
+	if !slices.Contains(fields, "time") {
+		fields = append(fields, "time")
+	}
+	if !slices.Contains(fields, "comments.time") {
+		fields = append(fields, "comments.time")
+	}
+
 	cfields := strings.Join(fields, ",")
 
 	sfields := helper.SplitFieldByName(cfields, "comments")
@@ -112,7 +119,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 	cmtCmd := ""
 	if len(sfields) > 1 {
 		sfields[1] = strings.Replace(sfields[1], "username", "user.username AS username", 1)
-		cmtCmd = fmt.Sprintf(", (SELECT %s OMIT user, post FROM comment WHERE post=$parent.id) AS comments", sfields[1])
+		cmtCmd = fmt.Sprintf(", (SELECT %s OMIT user, post FROM comment WHERE post=$parent.id ORDER BY time) AS comments", sfields[1])
 	}
 
 	// Add conditions
@@ -123,7 +130,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 			cndCmd += fmt.Sprintf("user.username='%s'", helper.SafelyConvertString(*filter.Username))
 		}
 	}
-
+	// fmt.Printf("%v\n", sfields)
 	// fmt.Printf("SELECT %s%s OMIT user FROM post %s\n", sfields[0], cmtCmd, cndCmd)
 	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s ORDER BY time DESC", sfields[0], cmtCmd, cndCmd), nil)
 	if err != nil {
