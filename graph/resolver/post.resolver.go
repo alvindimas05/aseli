@@ -125,7 +125,7 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 	}
 
 	// fmt.Printf("SELECT %s%s OMIT user FROM post %s\n", sfields[0], cmtCmd, cndCmd)
-	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s", sfields[0], cmtCmd, cndCmd), nil)
+	query, err := db.Query(fmt.Sprintf("SELECT %s%s OMIT user FROM post %s ORDER BY time DESC", sfields[0], cmtCmd, cndCmd), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -133,6 +133,17 @@ func (r *queryResolver) Posts(ctx context.Context, filter *model.PostsFilter) ([
 	ndata := helper.NormalizeQueryResult(query)
 	posts := []*model.PostResponse{}
 	surrealdb.Unmarshal(ndata, &posts)
+
+	for i, post := range(posts) {
+		if post.Time != "" {
+			posts[i].Time = helper.DatetimeToRelative(post.Time)
+		}
+		for j, comment := range(post.Comments){
+			if comment.Time != "" {
+				posts[i].Comments[j].Time = helper.DatetimeToRelative(posts[i].Comments[j].Time)
+			}
+		}
+	}
 
 	// resPosts := []*model.PostResponse{}
 	// for _, post := range(posts) {

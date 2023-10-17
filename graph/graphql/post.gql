@@ -33,6 +33,7 @@ type PostResponse {
     title: String!
     description: String!
     image: String!
+    time: String!
     ril: Int!
     fek: Int!
     user_ril: Boolean!

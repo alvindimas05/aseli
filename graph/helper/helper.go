@@ -2,6 +2,7 @@ package helper
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"path"
@@ -163,4 +164,32 @@ func SaveImage(image graphql.Upload) string {
 func DeleteImage(filename string) {
 	imgPath := path.Join(MkdirImages(), filename)
 	os.Remove(imgPath)
+}
+
+func DatetimeToRelative(datetime string) string {
+	parsedTime, err := time.Parse(time.RFC3339, datetime)
+	if err != nil {
+		panic(err)
+	}
+
+	currentTime := time.Now()
+	elapsedTime := currentTime.Sub(parsedTime)
+
+	minutes := int(elapsedTime.Minutes())
+	hours := int(elapsedTime.Hours())
+	days := int(hours / 24)
+
+	if days > 1 {
+		return fmt.Sprintf("%d days ago...", days)
+	} else if days == 1 {
+		return "A day ago..."
+	} else if hours > 1 {
+		return fmt.Sprintf("%d hours ago...", hours)
+	} else if hours == 1 {
+		return "An hour ago..."
+	} else if minutes > 1 {
+		return fmt.Sprintf("%d minutes ago...", minutes)
+	} else {
+		return "Just now"
+	}
 }
