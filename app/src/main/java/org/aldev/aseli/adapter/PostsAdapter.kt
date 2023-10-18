@@ -1,10 +1,10 @@
 package org.aldev.aseli.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +23,7 @@ import org.aldev.aseli.views.HomeView
 
 class PostsAdapter(
     private val avt: HomeView,
-    private var posts: List<GetPostsQuery.Post>,
+    private val posts: List<GetPostsQuery.Post>,
     private val viewModel: PostsFragmentViewModel
 ) : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
     private lateinit var postViewModel: PostAdapterViewModel
@@ -46,8 +46,8 @@ class PostsAdapter(
         binding.itemPostCommentTotal.text = post.comments_total.toString()
         binding.itemPostTime.text = post.time
 
-        setButtonRil(binding.root.context, binding.itemPostRilBtn, post.user_ril)
-        setButtonFek(binding.root.context, binding.itemPostFekBtn, post.user_fek)
+        setButtonRil(binding.root.context, binding.itemPostRilBtn, post.user_ril, false)
+        setButtonFek(binding.root.context, binding.itemPostFekBtn, post.user_fek, false)
 
         binding.itemPostRilBtn.setOnClickListener { viewModel.sendRil(post.id) { ril -> updateRil(binding, ril!!) } }
         binding.itemPostFekBtn.setOnClickListener { viewModel.sendFek(post.id) { fek -> updateFek(binding, fek!!) } }
@@ -55,26 +55,39 @@ class PostsAdapter(
         Glide.with(avt).load("${Client.imagesUrl}/${post.image}").into(holder.binding.itemPostImage)
         setProfileImage(holder, post.username)
 
-        val commentsAdapter = CommentsAdapter(avt, post.comments)
+        val commentsAdapter = CommentsAdapter(avt, post.comments.toMutableList())
         binding.itemCommentsList.commentsList.apply {
             adapter = commentsAdapter
             layoutManager = LinearLayoutManager(avt)
         }
-        setCommentsButton(/*binding.itemPost, */binding.itemCommentsList.root, binding.itemPostCommentBtn/*, binding.itemCommentsList.btnExit*/)
+
+        setCommentsButton(binding, post, commentsAdapter/*binding.itemPost, binding.itemCommentsList.root, binding.itemPostCommentBtn, binding.itemCommentsList.btnExit*/)
 
         YoYo.with(Techniques.FadeInDown).duration(800).playOn(binding.root)
     }
-    private fun setCommentsButton(/*post: LinearLayout, */commentsList: LinearLayout, btnComment: ImageButton/*, btnExit: ImageButton*/){
-        btnComment.setOnClickListener {
+    @SuppressLint("SetTextI18n")
+    private fun setCommentsButton(binding: ItemPostBinding, post: GetPostsQuery.Post, commentsAdapter: CommentsAdapter/*post: LinearLayout, commentsList: LinearLayout, btnComment: ImageButton, btnExit: ImageButton*/){
+        binding.itemCommentsList.btnSendComment.setOnClickListener {
+            val comment = binding.itemCommentsList.commentInput.text.toString()
+            commentsAdapter.comments.add(
+                GetPostsQuery.Comment(SessionHandler(avt).getUsername(), "Just now", comment)
+            )
+            commentsAdapter.notifyItemInserted(commentsAdapter.itemCount - 1)
+            postViewModel.sendComment(post.id, comment)
+
+            binding.itemPostCommentTotal.text = (binding.itemPostCommentTotal.text.toString().toInt() + 1).toString()
+            binding.itemCommentsList.commentInput.text.clear()
+        }
+        binding.itemPostCommentBtn.setOnClickListener {
 //            post.visibility = View.GONE
-            val isVisible = commentsList.visibility == View.GONE
-            if(isVisible) commentsList.visibility = View.VISIBLE
+            val isVisible = binding.itemCommentsList.root.visibility == View.GONE
+            if(isVisible) binding.itemCommentsList.root.visibility = View.VISIBLE
 
             var yoyo = YoYo.with(if(isVisible) Techniques.FadeIn else Techniques.FadeOut).duration(500)
-            if(!isVisible) yoyo = yoyo.onEnd { commentsList.visibility = View.GONE }
-            yoyo.playOn(commentsList)
+            if(!isVisible) yoyo = yoyo.onEnd { binding.itemCommentsList.root.visibility = View.GONE }
+            yoyo.playOn(binding.itemCommentsList.root)
 
-            YoYo.with(Techniques.Bounce).duration(700).playOn(btnComment)
+            YoYo.with(Techniques.Bounce).duration(700).playOn(binding.itemPostCommentBtn)
         }
 //        btnExit.setOnClickListener {
 //            post.visibility = View.VISIBLE
@@ -87,17 +100,17 @@ class PostsAdapter(
             Glide.with(avt).load(if(it == null) Client.randomImageUrl else "${Client.imagesUrl}/${it}").into(holder.binding.itemPostProfil)
         }
     }
-    private fun setButtonRil(ctx: Context, btn: ImageButton, ril: Boolean) {
+    private fun setButtonRil(ctx: Context, btn: ImageButton, ril: Boolean, anim: Boolean = true) {
         val img = DrawableCompat.wrap(btn.drawable)
         img.setTint(ctx.getColor(if(ril) R.color.green else R.color.white))
 
-        YoYo.with(if(ril) Techniques.Tada else Techniques.Swing).duration(700).playOn(btn)
+        if(anim) YoYo.with(if(ril) Techniques.Tada else Techniques.Swing).duration(700).playOn(btn)
     }
-    private fun setButtonFek(ctx: Context, btn: ImageButton, fek: Boolean) {
+    private fun setButtonFek(ctx: Context, btn: ImageButton, fek: Boolean, anim: Boolean = true) {
         val img = DrawableCompat.wrap(btn.drawable)
         img.setTint(ctx.getColor(if(fek) R.color.red else R.color.white))
 
-        YoYo.with(if(fek) Techniques.Swing else Techniques.Tada).duration(700).playOn(btn)
+        if(anim) YoYo.with(if(fek) Techniques.Swing else Techniques.Tada).duration(700).playOn(btn)
     }
     private fun updateRil(binding: ItemPostBinding, ril: Boolean){
         val rilVal = binding.itemPostRil.text.toString().toInt() + if(ril) 1 else -1

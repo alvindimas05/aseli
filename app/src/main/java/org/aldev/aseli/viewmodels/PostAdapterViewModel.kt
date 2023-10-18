@@ -1,23 +1,14 @@
 package org.aldev.aseli.viewmodels
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Optional
 import kotlinx.coroutines.launch
-import org.aldev.UserQuery
-import org.aldev.aseli.misc.Client
+import org.aldev.SendCommentMutation
 
-class PostAdapterViewModel : ViewModel() {
-    private lateinit var client: ApolloClient
-    fun setClient(authKey: String){
-        client = Client.setClient(authKey)
+class PostAdapterViewModel : ProfileViewModel() {
+    fun sendComment(post_id: String, comment: String){
+        viewModelScope.launch { sendCommentCoroutine(post_id, comment) }
     }
-    fun setProfileImage(username: String, callback: (profileImage: String?) -> Unit){
-        viewModelScope.launch { setProfileImageCoroutine(username, callback) }
-    }
-    private suspend fun setProfileImageCoroutine(username: String, callback: (profileImage: String?) -> Unit){
-        val user = client.query(UserQuery(Optional.present(username))).execute()
-        callback(user.data!!.user.profile_image)
+    private suspend fun sendCommentCoroutine(post_id: String, comment: String){
+        client.mutation(SendCommentMutation(post_id, comment)).execute()
     }
 }

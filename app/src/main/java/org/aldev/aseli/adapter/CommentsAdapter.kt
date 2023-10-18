@@ -4,6 +4,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import org.aldev.GetPostsQuery
 import org.aldev.aseli.databinding.ItemCommentBinding
 import org.aldev.aseli.misc.Client
@@ -13,7 +15,7 @@ import org.aldev.aseli.views.HomeView
 
 class CommentsAdapter (
     private val avt: HomeView,
-    private val comments: List<GetPostsQuery.Comment>
+    val comments: MutableList<GetPostsQuery.Comment>
 ) : RecyclerView.Adapter<CommentsAdapter.CommentHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CommentHolder(ItemCommentBinding.inflate(
         avt.layoutInflater, parent, false
@@ -29,6 +31,8 @@ class CommentsAdapter (
         binding.commentValue.text = comment.comment
 
         setProfileImage(viewModel, holder, comment.username)
+
+        YoYo.with(Techniques.FadeInDown).duration(700).playOn(binding.root)
     }
     private fun setProfileImage(viewModel: CommentsAdapterCommentViewModel, holder: CommentHolder, username: String){
         viewModel.setClient(SessionHandler(avt).getSessionKey())

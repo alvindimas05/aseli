@@ -23,3 +23,10 @@ mutation CreatePost($image: Upload!, $title: String!, $description: String!) {
         post_id
     }
 }
+
+mutation SendComment($post_id: String!, $comment: String!) {
+    sendComment(input: { post_id: $post_id, comment: $comment }) {
+        comment_id
+        time
+    }
+}

@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:orientation="vertical"
+    android:layout_marginBottom="20dp"
     android:background="@drawable/bg_item_comment">
 <!--    <ImageButton-->
 <!--        android:id="@+id/btn_exit"-->
@@ -14,11 +14,40 @@
 <!--        android:layout_marginEnd="10dp"-->
 <!--        android:layout_gravity="end"-->
 <!--        android:background="@drawable/icon_exit"/>-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/comments_list"
-        android:layout_marginTop="20dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comments_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp">
+        <EditText
+            android:id="@+id/comment_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:layout_marginTop="10dp"
+            android:textSize="13sp"
+            android:autofillHints="none"
+            android:inputType="text|textMultiLine|textCapSentences"
+            android:hint="Minimal komenlah..."/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:gravity="bottom|end">
+            <ImageButton
+                android:id="@+id/btn_send_comment"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/icon_paper_plane"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
