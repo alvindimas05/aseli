@@ -1,30 +1,40 @@
+<script lang="ts" context="module">
+    export interface User {
+        user: {
+            id: string,
+            profile_image: string
+        }
+    }
+</script>
 <script lang="ts">
-    import client, { clientUpload, url } from "@gql/client";
+    export let search_username: string | undefined = undefined;
+
+    import { clientUpload, url } from "@gql/client";
     import { USER_POSTS } from "@gql/post";
     import { CHANGE_PROFILE_IMAGE, USER } from "@gql/user";
     import Sidebar from "components/Sidebar.svelte";
     import { query, setClient, type ReadableQuery, mutation } from "svelte-apollo";
+    import { navigate } from "svelte-routing";
 
     // @ts-ignore
     setClient(clientUpload);
-
-    interface User {
-        user: {
-            profile_image: string
-        }
-    }
 
     interface Posts {
         posts: {
             image: string
         }[]
     }
-    const username = localStorage.getItem("username")
-    const user: ReadableQuery<User> = query(USER);
+    const username = search_username ?? localStorage.getItem("username");
+    const user: ReadableQuery<User> = query(USER, { variables: { username } });
     const posts: ReadableQuery<Posts> = query(USER_POSTS, { variables: { username } });
     let profile: string | null = null;
 
-    $: $user.data, (() => profile = $user.data?.user.profile_image ? `${url}/images/${$user.data?.user.profile_image}` : "https://picsum.photos/200")();
+    $: $user.data, (() => {
+        if(!$user.data) return;
+
+        if($user.data.user.id === "") navigate("/");
+        profile = $user.data?.user.profile_image ? `${url}/images/${$user.data?.user.profile_image}` : "https://picsum.photos/200";
+    })();
 
     const toBase64 = (file: File) => new Promise<string | ArrayBuffer | null>((resolve, reject) => {
         const reader = new FileReader();
@@ -118,7 +128,7 @@
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <img role="button" on:click={() => inputFile.click()} src={profile}  class="w-[150px] h-[150px] rounded-full border border-white">
                 {/if}
-                <div class="text-white text-3xl mt-4">{localStorage.getItem("username")}</div>
+                <div class="text-white text-3xl mt-4">{username}</div>
                 <div class="flex w-full justify-between items-center text-white text-center mt-8 text-xl">
                     <div class="grid grid-cols-1">
                         <span class="font-bold">0</span>

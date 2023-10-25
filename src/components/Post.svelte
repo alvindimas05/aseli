@@ -9,16 +9,20 @@
         comments_total: number,
         user_ril: boolean,
         user_fek: boolean,
-        image: string
+        image: string,
+        user_profile_image: string
     }
 </script>
 <script lang="ts">
     import Fa from "svelte-fa";
-    import { faComment, faEllipsisV, faShare, faThumbsDown, faThumbsUp, faUser } from "@fortawesome/free-solid-svg-icons";
+    import { faComment, faEllipsisV, faShare, faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
     import { url } from "@gql/client";
     import type { FetchResult } from "@apollo/client";
-    import { mutation } from "svelte-apollo";
+    import { mutation, query, type ReadableQuery } from "svelte-apollo";
     import { FEK, RIL } from "@gql/post";
+    import type { User } from "../routes/Profile.svelte";
+    import { USER } from "@gql/user";
+    import { link } from "svelte-routing";
     export let post: PostData;
 
     // Ril only
@@ -71,13 +75,24 @@
         }
         return auth;
     }
+
+    const username = localStorage.getItem("username");
+    let profile: string | null = null;
+    let user: ReadableQuery<User> = query(USER, { variables: post.username });
+
+    $: $user.data, (() => profile = $user.data?.user.profile_image ? `${url}/images/${$user.data?.user.profile_image}` : "https://picsum.photos/200")();
 </script>
 <div class="grid grid-cols-1 mx-auto my-10 w-[600px] rounded-xl drop-shadow-2xl bg-[#222]">
     <div class="flex items-center py-4 pr-4">
         <div class="grid grid-cols-2 place-items-center">
-            <!-- <img src="/icon/profil.png" class="w-[45px] h-[45px] rounded-full border border-white"> -->
-            <Fa class="text-2xl text-white ms-5" icon={faUser}/>
-            <span class="text-white text-lg ms-3">{post.username}</span>
+            {#if profile != null}
+                <a href={"/profile" + (username === post.username ? "" : `/${post.username}`)} use:link>
+                    <!-- svelte-ignore a11y-missing-attribute -->
+                    <img src={profile}  class="w-[45px] h-[45px] rounded-full border border-white ms-5">
+                </a>
+            {/if}
+            <!-- <Fa class="text-2xl text-white ms-5" icon={faUser}/> -->
+            <a href={"/profile" + (username === post.username ? "" : `/${post.username}`)} use:link><span class="text-white text-lg ms-3">{post.username}</span></a>
         </div>
         <!-- <img src="/icon/menu-vertical.png" class="w-[30px] h-[30px] ml-auto"> -->
         <Fa class="text-3xl text-white ms-auto" icon={faEllipsisV}/>

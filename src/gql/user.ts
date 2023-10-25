@@ -15,9 +15,9 @@ mutation RegisterUser($username: String!, $password: String!, $verification_pass
 }`;
 
 export const USER = gql`
-	query User {
-		user {
-			profile_image
+	query User($username: String) {
+		user(username: $username) {
+			id profile_image
 		}
 	}
 `;
