@@ -33,7 +33,7 @@
         {/if}
     </div>
     <div class="w-[325px] h-screen">
-        <div class="h-full pl-4 pr-3 pt-12 overflow-y-auto">
+        <!-- <div class="h-full pl-4 pr-3 pt-12 overflow-y-auto">
             <div class="grid grid-cols-1 text-white rounded-xl bg-[#1F1913] pt-4">
                 <span class="text-xl mx-4 my-2">Trending</span>
                 <div class="grid grid-cols-1 hover:bg-[#4F4943] my-2 px-4">
@@ -72,6 +72,6 @@
             <div class="copyright text-md text-white text-center mt-3">
                 © 2023 aseli
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

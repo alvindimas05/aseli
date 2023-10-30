@@ -120,6 +120,16 @@
         <div class="text-white my-3 text-2xl">{post.title}</div>
         <div class="text-white">{post.description}</div>
         <!-- <div class="text-[#ADD8E6]">Baca selengkapnya...</div> -->
-        <!-- <div class="text-[#d5d5d5] mt-7">Lihat semua 123 komen</div> -->
+        <div class="flex text-white text-lg mt-5">
+            <img src="https://picsum.photos/200" class="w-[50px] h-[50px] rounded-full mr-3">
+            <div>
+                <div class="font-bold">
+                    Username
+                </div>
+                <div class="font-light">
+                    Komen, Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quisquam.
+                </div> 
+            </div>  
+        </div>
     </div>
 </div>
