@@ -23,3 +23,10 @@ query Posts($username: String!) {
         image
     }
 }`;
+
+export const CREATE_POST = gql`
+mutation CreatePost($title: String!, $description: String!, $image: Upload!) {
+    createPost(title: $title, description: $description, image: $image) {
+        post_id
+    }
+}`;
