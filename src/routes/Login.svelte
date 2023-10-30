@@ -66,7 +66,7 @@
                         Ingatin
                     </label> -->
                     <p class="p-2 text-right text-cyan-500 hover:text-cyan-300">Forgot Password?</p>
-                    <button class="bg-[#0E8388] rounded-lg text-white py-2 hover:bg-cyan-500">Login</button>
+                    <button  type="submit" class="bg-[#0E8388] rounded-lg text-white py-2 hover:bg-cyan-500">Login</button>
                     <div class=" mt-5 text-center text-white">
                         <span>Gak punya akun?</span>
                         <Link to="/register"  class="w-1/2 text-cyan-500 hover:underline">Buat dong</Link>

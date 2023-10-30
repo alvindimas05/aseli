@@ -1,6 +1,6 @@
 <script lang="ts">
     import { link, navigate } from "svelte-routing";
-    import { faArrowRightFromBracket, faHome, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+    import { faArrowRightFromBracket, faHome, faPlusSquare, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
 
     function logout(){
@@ -64,6 +64,13 @@
                 <!-- <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil"> -->
                 <Fa class="text-white text-2xl" icon={faUser}/>
                 <span class="flex-1 ml-3 whitespace-nowrap">Profil</span>
+                </a>
+            </li>
+            <li>
+                <a href="/post-preview" use:link class="flex items-center p-4 rounded-lg text-white" class:selected={location.pathname === "/post-preview"}>
+                <!-- <img src="/icon/profil.png" class="w-[25px] h-[25px]" alt="profil"> -->
+                <Fa class="text-white text-2xl" icon={faPlusSquare}/>
+                <span class="flex-1 ml-3 whitespace-nowrap">Add Post</span>
                 </a>
             </li>
             <li>
