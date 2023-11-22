@@ -4,6 +4,9 @@ export const POSTS = gql`
 query {
     posts {
         id username title description ril fek user_ril user_fek image comments_total
+        comments {
+            id username comment
+        }
     }
 }`;
 
