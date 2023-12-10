@@ -1,5 +1,11 @@
+<script lang="ts" context="module">
+    export interface PostsResponse {
+        posts: PostData[];
+    }
+</script>
+
 <script lang="ts">
-	import { query, setClient, type ReadableQuery } from "svelte-apollo";
+    import { query, setClient, type ReadableQuery } from "svelte-apollo";
     import client from "@gql/client";
     import { POSTS } from "@gql/post";
     import Sidebar from "components/Sidebar.svelte";
@@ -8,27 +14,15 @@
     // @ts-ignore
     setClient(client);
 
-    interface PostsResponse {
-        posts: PostData[]
-    }
-
     const posts: ReadableQuery<PostsResponse> = query(POSTS);
 </script>
-<style lang="scss">
-    .konten::-webkit-scrollbar {
-        display: none;
-    }
-    .konten {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-</style>
+
 <div class="w-full flex">
-    <Sidebar/>
+    <Sidebar />
     <div class="konten container h-[100vh] mx-auto overflow-y-scroll w-[900px]">
         {#if $posts.data}
             {#each $posts.data.posts as post}
-                <Post {post}/>
+                <Post {post} refetch={posts.refetch} />
             {/each}
         {/if}
     </div>
@@ -75,3 +69,13 @@
         </div> -->
     </div>
 </div>
+
+<style lang="scss">
+    .konten::-webkit-scrollbar {
+        display: none;
+    }
+    .konten {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>

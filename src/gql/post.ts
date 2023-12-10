@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const POSTS = gql`
 query {
     posts {
-        id username title description ril fek user_ril user_fek image comments_total
+        id username title description ril fek user_ril user_fek image time comments_total
         comments {
             id username comment
         }
@@ -31,5 +31,13 @@ export const CREATE_POST = gql`
 mutation CreatePost($title: String!, $description: String!, $image: Upload!) {
     createPost(title: $title, description: $description, image: $image) {
         post_id
+    }
+}`;
+
+export const COMMENT = gql`
+mutation SendComment($post_id: String!, $comment: String!) {
+    sendComment(input: { post_id: $post_id, comment: $comment }) {
+        comment_id
+        time
     }
 }`;

@@ -10,12 +10,16 @@
         user_ril: boolean;
         user_fek: boolean;
         image: string;
+        time: string;
         comments: CommentData[];
     }
 </script>
 
 <script lang="ts">
     export let post: PostData;
+    export let refetch: (
+        variables?: Partial<OperationVariables> | undefined,
+    ) => Promise<ApolloQueryResult<PostsResponse>>;
 
     import Fa from "svelte-fa";
     import {
@@ -26,14 +30,19 @@
         faThumbsUp,
     } from "@fortawesome/free-solid-svg-icons";
     import { url } from "@gql/client";
-    import type { FetchResult } from "@apollo/client";
+    import type {
+        ApolloQueryResult,
+        FetchResult,
+        OperationVariables,
+    } from "@apollo/client";
     import { mutation, query, type ReadableQuery } from "svelte-apollo";
-    import { FEK, RIL } from "@gql/post";
+    import { COMMENT, FEK, RIL } from "@gql/post";
     import type { User } from "../routes/Profile.svelte";
     import { USER } from "@gql/user";
     import { link } from "svelte-routing";
     import type { CommentData } from "./Comment.svelte";
     import Comment from "./Comment.svelte";
+    import type { PostsResponse } from "../routes/Home.svelte";
 
     // Ril only
     const sendRil = mutation(RIL);
@@ -99,7 +108,25 @@
                 ? `${url}/images/${$user.data?.user.profile_image}`
                 : "https://picsum.photos/200"))();
 
-    let commentSection: HTMLDivElement;
+    interface CommentResult {
+        sendComment: {
+            comment_id: string;
+            time: string;
+        };
+    }
+    let commentInput: HTMLInputElement;
+    const sendComment = mutation<CommentResult>(COMMENT);
+    async function postComment(post_id: string) {
+        try {
+            await sendComment({
+                variables: { post_id, comment: commentInput.value },
+            });
+            commentInput.value = "";
+            await refetch();
+        } catch (err) {
+            console.error(err);
+        }
+    }
 </script>
 
 <div
@@ -166,16 +193,28 @@
         <span class="text-white text-lg ml-1">{post.comments_total}</span>
         <!-- <img src="/icon/share.png" class="w-[30px] h-[30px] ms-2"> -->
         <Fa class="text-2xl text-white ms-2" icon={faShare} />
+        <div class="text-gray-500 text-xs w-full flex justify-end items-center">
+            <span>{post.time}</span>
+        </div>
     </div>
 
     <div class="post-detail text-lg w-[610px] px-4 pb-4 mt-4">
         <div class="text-white my-3 text-2xl">{post.title}</div>
         <div class="text-white">{post.description}</div>
         <!-- <div class="text-[#ADD8E6]">Baca selengkapnya...</div> -->
-        <div bind:this={commentSection}>
+        <div>
             {#each post.comments as comment}
                 <Comment {comment} />
             {/each}
+        </div>
+        <div class="w-full">
+            <input
+                type="text"
+                bind:this={commentInput}
+                placeholder="Write comment..."
+                class="mt-4 py-2 px-3 bg-transparent border-[1px] outline-none text-white w-full"
+                on:keydown={(e) => e.key === "Enter" && postComment(post.id)}
+            />
         </div>
     </div>
 </div>
